@@ -1,0 +1,4 @@
+obj_dir
+compile_commands.json
+.cache
+vbuddy.cfg
