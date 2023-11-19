@@ -1,12 +1,11 @@
 # Team20 - RISC-V Lab 4
 RISC-V CPU Project for Imperial EIE 2023/24
 
-## Team Roles
+## Notes:
 
-## Contributing
+- Not sure if the PC is correct, it msut follow byte addressing and so i assume we must ignore the last 2 bits since each word address increments by a value of 4
+, and so I only read the adress of the PC[31:2], I will change this if my interpretation of byte adressing is incorrect. So far it seems to work, check screenshots below.
 
-### Branching
-Do not push to master, the repomaster will merge individual branches periodically to prevent conflicts and breakages.
-
-### Directory Structure
-This is the directory structure that will be used for the project.
+![mem](/images/img1.png)
+![trace1](/images/img2.png)
+![trace2](/images/img3.png)
