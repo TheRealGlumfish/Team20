@@ -7,5 +7,5 @@ RISC-V CPU Project for Imperial EIE 2023/24
 , and so I only read the adress of the PC[31:2], I will change this if my interpretation of byte adressing is incorrect. So far it seems to work, check screenshots below.
 
 ![mem](/images/img1.png)
-![trace1](/images/img2.png)
-![trace2](/images/img3.png)
+![trace1](/doc/images/img2.png)
+![trace2](/doc/images/img3.png)
