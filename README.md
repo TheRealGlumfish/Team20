@@ -13,6 +13,7 @@ RISC-V CPU Project for Imperial EIE 2023/24
 
 ### Branching
 Do not push to master, the repomaster will merge individual branches periodically to prevent conflicts and breakages.
+A branch has been created for each module of the CPU, so commit there accordingly.
 
 ### Directory Structure
 This is the directory structure that will be used for the project.
