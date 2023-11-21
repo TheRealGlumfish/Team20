@@ -7,9 +7,9 @@ module alu(
 );
 
 always_comb
-    begin
-        ALUout = ALUop1 + ALUop2;
-        EQ = ALUop1 == ALUop2;
-    end 
+begin
+    ALUout = ALUop1 + ALUop2;
+    EQ = ALUop1 == ALUop2;
+end 
 
 endmodule
