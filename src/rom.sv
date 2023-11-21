@@ -6,7 +6,7 @@ module rom #(
     output logic [DATA_WIDTH-1:0]           instr
 );
 
-logic [DATA_WIDTH-1:0] rom_array [2**ADDRESS_WIDTH-1:0];
+logic [DATA_WIDTH-1:0] rom_array [2**(ADDRESS_WIDTH-2)-1:0];
 
 assign instr = rom_array[PC[DATA_WIDTH-1:2]];
 
