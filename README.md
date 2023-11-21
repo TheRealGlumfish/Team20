@@ -16,3 +16,7 @@ Do not push to master, the repomaster will merge individual branches periodicall
 
 ### Directory Structure
 This is the directory structure that will be used for the project.
+Directory | Use
+:--------:|:------------------------------------------------
+`src`     | SystemVerilog modules and testbench source code
+`doc`     | Documentation
