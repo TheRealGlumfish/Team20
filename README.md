@@ -4,7 +4,7 @@ RISC-V CPU Project for Imperial EIE 2023/24
 ## Team Roles
 
 - **Repo Master** - Dimitrios Alexopoulos
-- **Arithmetic and Logic Unit** - Dimitrios Alexopoulos, Toby Browne (Assisting)
+- **Arithmetic and Logic Unit** - Dimitrios Alexopoulos
 - **Program Counter and Instruction Memory** - Adam Eljaafari
 - **Control and Sign Extention Unit** - Archisha Garg
 - **Testbenches/Verification** - Toby Browne
