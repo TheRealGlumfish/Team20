@@ -14,7 +14,7 @@ RISC-V CPU Project for Imperial EIE 2023/24
 
 - **The instructions must be spaced according to their bytes** (see image below), since if the instruction is not byte spaced ,the `readmemh` part in mod.sv will read the last bytes of 4 subsequent instructions, instead of all the 4 bytes that make up 1 instruction, since it expects each byte to have spcacing between another ,this is because in the rom.sv unit it is told to expect data of width 8 bits in each address, to distinguish between bytes. This is important so keep this in mind.
 
-![memory](../doc/images/mem.png)
+![memory](./images/mem.png)
 
 The trace below can be cross refrenced with the memory file screenshot above, the byte addressing does indeed work and so our memory is byte addressed.
-![trace](../doc/images/trace.png)
+![trace](./images/trace.png)
