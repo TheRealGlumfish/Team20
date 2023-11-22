@@ -10,21 +10,17 @@ module PC_mod#(
     output  logic [WIDTH-1:0]   PC_curr  //next pc after next clk cycle (prev clk if no in next clk cycle)
 );
 
-/* Tried to do soemthign like this but it didn't work propebaly have to use
-* a always comb sstatement to do this
-logic [WIDTH-1:0] branch_PC= PC + ImmOp;
-logic [WIDTH-1:0] incr_PC= PC + 3'b100;
-logic [WIDTH-1:0] next_PC= PC_CTRL ? branch_PC : incr_PC ;
-*/
+// Insures that in the beginning our PC value is 0 in beginning, preventing undefined behaviour
 
-logic [WIDTH-1:0] next_PC ;
+initial 
+    PC_curr = 0;
 
-always_ff @(posedge clk) begin
-    if(rst)
-        PC_curr <= 0;
-    else
-        next_PC <= PC_CTRL ? PC_curr + ImmOp : PC_curr + 3'b100 ; PC_curr<= next_PC;
-    end
+always_ff @(posedge clk) 
+    
+    if(rst) PC_curr <= 0;    
+    //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
+    else PC_curr <= PC_CTRL ? PC_curr + ImmOp : PC_curr + 4 ;
+
 endmodule
 
 

@@ -23,7 +23,7 @@ int main(int argc,char **argv, char **env){
     tfp->open ("Vtop.vcd");
 
 
-    top->clk=1;
+    top->clk=0;
     top->PC_CTRL=1;
 
     for (i=0; i<40; i++){

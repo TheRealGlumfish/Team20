@@ -3,9 +3,18 @@ RISC-V CPU Project for Imperial EIE 2023/24
 
 ## Notes:
 
-- Not sure if the PC is correct, it msut follow byte addressing and so i assume we must ignore the last 2 bits since each word address increments by a value of 4
-, and so I only read the adress of the PC[31:2], I will change this if my interpretation of byte adressing is incorrect. So far it seems to work, check screenshots below.
+- Allocated a ROM array (read-only memory) with 2^10 8-bit memory locations (same as having 2^8=256 32-bit memory locations).
+- Ignores the last 2 bits of our PC, as we need to make this byte-addressed.
+- Byte addressing: Each instruction is made of 4 addresses, and these addresses are offsets of the `addr` value. The list below associates the offset value and its corresponding instruction byte value.
+  - Offset 0: byte 3 (MSB)
+  - Offset 1: byte 2
+  - Offset 2: byte 1
+  - Offset 3: byte 0 (LSB)
+- Through the concatenation of these bytes, we reconstruct our original instruction.
 
-![mem](/doc/images/img1.png)
-![trace1](/doc/images/img2.png)
-![trace2](/doc/images/img3.png)
+- **The instructions must be spaced according to their bytes** (see image below), since if the instruction is not byte spaced ,the `readmemh` part in mod.sv will read the last bytes of 4 subsequent instructions, instead of all the 4 bytes that make up 1 instruction, since it expects each byte to have spcacing between another ,this is because in the rom.sv unit it is told to expect data of width 8 bits in each address, to distinguish between bytes. This is important so keep this in mind.
+
+![memory](../doc/images/mem.png)
+
+The trace below can be cross refrenced with the memory file screenshot above, the byte addressing does indeed work and so our memory is byte addressed.
+![trace](../doc/images/trace.png)
