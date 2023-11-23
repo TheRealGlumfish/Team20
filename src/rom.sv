@@ -1,5 +1,5 @@
 module rom#(
-    parameter NUM_ADDRESSES=10, //we have 2^10 memory locations (addresses)
+    parameter NUM_ADDRESSES=10 //we have 2^10 memory locations (addresses)
 )(
     input logic [31:0]  PC, //current program counter
     output logic [31:0] instr //the instruction at this PC value

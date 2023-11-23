@@ -30,7 +30,8 @@ logic [31:0] instr;
 
 pc Pc(clk, rst, PCsrc, ImmOp, PC);
 rom Rom(PC, instr);
-// control unit and sign-extension unit goes here
+cu Cu(instr, EQ, PCsrc, ALUsrc, RegWrite, ImmSrc, ALUctrl);
+se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
 assign rd = instr[11:7];
