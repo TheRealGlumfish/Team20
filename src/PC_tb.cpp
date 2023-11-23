@@ -24,7 +24,7 @@ int main(int argc,char **argv, char **env){
 
 
     top->clk=0;
-    top->PC_CTRL=1;
+    top->PCsrc=1;
 
     for (i=0; i<40; i++){
         top->ImmOp=4;
