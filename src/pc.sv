@@ -1,12 +1,10 @@
-module pc#(
-    parameter WIDTH=32
-)(
+module pc(
     //interface signals
-    input  logic             clk,      // clock 
-    input  logic             rst,      // reset
-    input  logic             PCsrc,      // Program counter control (from control unit, do we branch or move to the next address, ie pc=pc+imm or pc=pc+4)
-    input  logic [WIDTH-1:0]   ImmOp,  //Immediate value to add to current PC val
-    output  logic [WIDTH-1:0]  PC  //next pc after next clk cycle (prev clk if no in next clk cycle)
+    input  logic          clk,      // clock 
+    input  logic          rst,      // reset
+    input  logic          PCsrc,      // Program counter control (from control unit, do we branch or move to the next address, ie pc=pc+imm or pc=pc+4)
+    input  logic [31:0]   ImmOp,  //Immediate value to add to current PC val
+    output  logic [31:0]  PC  //next pc after next clk cycle (prev clk if no in next clk cycle)
 );
 
 // Insures that in the beginning our PC value is 0 in beginning, preventing undefined behaviour
