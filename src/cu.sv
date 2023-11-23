@@ -6,7 +6,7 @@ module cu(
     output logic  MemWrite,
     output logic  ALUSrc,
     output logic  RegWrite,
-    output logic [1:0] ImmSrc,//this is ok
+    output logic  ImmSrc,
     output logic [2:0] ALUControl
 );
 
