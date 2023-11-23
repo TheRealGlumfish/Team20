@@ -1,4 +1,4 @@
-#include "Vtop.h"
+#include "Vpcmod.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 /*
@@ -14,7 +14,7 @@ int main(int argc,char **argv, char **env){
 
     Verilated::commandArgs(argc, argv);
     //init top verilog instance
-    Vtop *top = new Vtop;
+    Vpcmod *top = new Vpcmod;
     //init trace dump
 
     Verilated::traceEverOn(true);

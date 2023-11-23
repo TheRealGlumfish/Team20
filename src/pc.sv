@@ -1,4 +1,4 @@
-module PC_mod#(
+module pc#(
     parameter WIDTH=32
 )(
     //interface signals

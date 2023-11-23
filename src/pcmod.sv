@@ -1,4 +1,4 @@
-module top#(
+module pcmod#(
     parameter WIDTH=32
 )(
     //interface signals
@@ -11,7 +11,7 @@ module top#(
 
 logic [WIDTH-1:0] addr;
 
-PC_mod Pc (
+pc Pc (
     .clk(clk),
     .rst(rst),
     .PCsrc(PCsrc),
