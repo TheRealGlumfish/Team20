@@ -17,14 +17,14 @@ int main(int argc, char **argv, char **env){
     Verilated::traceEverOn(true);
     VerilatedVcdC* tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
-    top->open("cpu.vcd");
+    tfp->open("cpu.vcd");
 
     //init vbuddy
     if(vbdOpen()!=1) return(-1);
-    vbdHeader("Lab 4: RISC-V CPU");
+    vbdHeader("Lab 4: CPU");
 
     // set rotary button to "one-shot" mode
-    vbdSetMode(1);
+    vbdSetMode(0);
 
     //initialise simulation inputs
     top->rst = 0;
@@ -38,14 +38,14 @@ int main(int argc, char **argv, char **env){
         }
 
         // rotary encoder can be used to slow simulation
-        std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
 
-        top->rst = vbdFlag();
+        // top->rst = vbdFlag();
 
         // displays CPU output
         vbdHex(2, top->a0);
 
-        if((Verilated::gotFinish()) || (vbdGetKey() == "q"))
+        if((Verilated::gotFinish()) || (vbdGetkey() == 'q'))
             exit(0);
 
     }

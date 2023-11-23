@@ -5,7 +5,7 @@ module rom#(
     output logic [31:0] instr //the instruction at this PC value
 );
 
-logic [31:0] rom_array [2**NUM_ADDRESSES-1:0]; /* allocate a rom array (only should read instruction mem and never write to it so we dont use RAM) 
+logic [7:0] rom_array [2**NUM_ADDRESSES-1:0]; /* allocate a rom array (only should read instruction mem and never write to it so we dont use RAM) 
 of size 8 bits in each mem location, and we have 2^10 of these  8 bit locations (same as having 2^8=256 32 bit memory locations)*/
 
 // ignore the last 2 bits of our pc, since we need to make this byte addressed
