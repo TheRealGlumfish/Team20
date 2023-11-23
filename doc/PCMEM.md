@@ -1,5 +1,4 @@
-# Team20 - RISC-V Lab 4
-RISC-V CPU Project for Imperial EIE 2023/24
+# Program Counter and Instruction Memory
 
 ## Notes:
 
@@ -16,5 +15,5 @@ RISC-V CPU Project for Imperial EIE 2023/24
 
 ![memory](./images/mem.png)
 
-The trace below can be cross refrenced with the memory file screenshot above, the byte addressing does indeed work and so our memory is byte addressed.
+The trace below can be cross referenced with the memory file screenshot above, the byte addressing does indeed work and so our memory is byte addressed.
 ![trace](./images/trace.png)
