@@ -1,4 +1,4 @@
-#include "VCU.h"
+#include "Vcu.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 /*
@@ -14,7 +14,7 @@ int main(int argc,char **argv, char **env){
 
     Verilated::commandArgs(argc, argv);
     //init top verilog instance
-    VCU *top = new VCU;
+    Vcu *top = new Vcu;
     //init trace dump
 
     Verilated::traceEverOn(true);
@@ -23,8 +23,8 @@ int main(int argc,char **argv, char **env){
     tfp->open ("Vtop.vcd");
 
 
-    top->instr=00000000000000000000000000010011;
-    top->Zero=0;
+    top->instr= 0b1100011;
+    top->Zero=1;
 
     for (i=0; i<40; i++){
 
