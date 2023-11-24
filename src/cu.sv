@@ -23,14 +23,15 @@ always_comb begin
             ImmSrc = 0; //I-Type instruction
             ALUsrc = 1; //Our source value comes from the sign extended Imm (ImmExt) and so select from 1
             ALUctrl = 3'b000; //Add instruction therfore ALUControl=000
+            RegWrite=1;
         end 
         // bne instruction
         7'b1100011: begin
-            if(Zero) 
+            if(~Zero) 
                 ImmSrc = 1;
                 PCSrc = 1; //We want to branch and so we select the branch_pc by setting the select to 1 
                 ALUctrl = 3'b001; //Add instruction therfore ALUControl=000
-            if(~Zero)
+            if(Zero)
                 PCSrc = 0;
                 ImmSrc = 1;
             end
@@ -39,4 +40,3 @@ end
 
 
 endmodule
-
