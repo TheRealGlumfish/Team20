@@ -13,10 +13,10 @@ initial
     PC = 0;
 
 always_ff @(posedge clk) 
-    
-    if(rst) PC <= 0;    
-    //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
-    else PC <= PCsrc ? PC + ImmOp : PC + 4 ;
+    if(rst)
+        PC <= 0; //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
+    else 
+        PC <= PCsrc ? PC + ImmOp : PC + 4 ;
 
 endmodule
 
