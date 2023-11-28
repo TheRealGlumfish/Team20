@@ -6,8 +6,8 @@ module se(
 
 always_comb
     if(ImmSrc)
-        ImmOp = {{20{instr[31]}}, instr[31:20]};
-    else
         ImmOp = {{20{instr[31]}}, instr[31:25], instr[11:7]};
+    else
+        ImmOp = {{20{instr[31]}}, instr[31:20]};
 
 endmodule
