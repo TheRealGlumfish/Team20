@@ -10,7 +10,7 @@ module regfile(
     output logic [31:0] a0
 );
 
-reg [31:0] registers[32];
+logic [31:0] registers[32];
 
 always_ff@(posedge clk)
 begin
@@ -18,7 +18,8 @@ begin
     RD2 <= registers[AD2];
     if (WE3)
         registers[AD3] <= WD3;
-    a0 <= registers[0];
+    a0 <= registers[10];
+    registers[0] <= 0;
 end
 
 endmodule
