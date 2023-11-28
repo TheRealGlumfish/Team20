@@ -24,7 +24,7 @@ int main(int argc, char **argv, char **env){
     vbdHeader("Lab 4: CPU");
 
     // set rotary button to "one-shot" mode
-    vbdSetMode(0);
+    vbdSetMode(1);
 
     //initialise simulation inputs
     top->rst = 0;
@@ -38,15 +38,21 @@ int main(int argc, char **argv, char **env){
         }
 
         // rotary encoder can be used to slow simulation
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
 
-        // top->rst = vbdFlag();
+        top->rst = vbdFlag();
 
         // displays CPU output
-        vbdHex(2, top->a0);
+        vbdHex(4, (int(top->a0) >> 16) & 0xF);
+        vbdHex(3, (int(top->a0) >> 8) & 0xF);
+        vbdHex(2, (int(top->a0) >> 4) & 0xF);
+        vbdHex(1, (int(top->a0)) & 0xF);
 
-        if((Verilated::gotFinish()) || (vbdGetkey() == 'q'))
+        if((Verilated::gotFinish()) || (vbdGetkey() == 'q')) {
+            vbdClose();
+            tfp->close();
             exit(0);
+        }
 
     }
     vbdClose();
