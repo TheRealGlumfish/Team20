@@ -13,13 +13,14 @@ module regfile(
 logic [31:0] registers[32];
 
 always_ff@(posedge clk)
-begin
-    RD1 <= registers[AD1];
-    RD2 <= registers[AD2];
     if (WE3)
         registers[AD3] <= WD3;
-    a0 <= registers[10];
-    registers[0] <= 0;
+
+always_comb begin
+    RD1 = registers[AD1];
+    RD2 = registers[AD2];    
+    a0 = registers[10];
+    registers[0] = 0;
 end
 
 endmodule

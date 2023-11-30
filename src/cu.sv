@@ -11,40 +11,30 @@ module cu(
 );
 
 logic [6:0] op = instr[6:0];
-// logic [2:0] func3 = instr[14:12];
-// logic [6:0] func7 = instr[31:25];
-// logic [11:0] imm12 = instr[31:20];
+//logic [6:0] func7 = instr[31:25];
+logic [2:0] func3 = instr[14:12];
 
-
-always_comb begin 
-    case(op) 
-        // addi instruction 
-        7'b0010011:
-        begin 
-            ImmSrc = 0; //I-Type instruction
-            ALUsrc = 1; //Our source value comes from the sign extended Imm (ImmExt) and so select from 1
-            ALUctrl = 3'b000; //Add instruction therfore ALUControl=000
-            RegWrite = 1;
-            PCsrc = 0;
-        end 
-        // bne instruction
-        7'b1100011:
-        begin
-            ALUsrc = 1; // change
-            RegWrite = 0;
-            ImmSrc = 1;
-            if(EQ)
-            begin
-                PCsrc = 0;
-            end
-            else
-            begin
-                PCsrc = 1; //We want to branch and so we select the branch_pc by setting the select to 1 
-                ALUctrl = 3'b001; //Add instruction therfore ALUControl=000
-            end
-        end
+//If there is a lw or R-type or I-type Then we want to write to the registers
+assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011) ? 1'b1 : 1'b0;
+//If there is a Branch type Then we want to select the  verion of sign extention needed for the branch instruction
+assign ImmSrc = (op==7'b1100011) ? 1'b1 : 0;
+//If there is a lw or sw or I-type Then we want to the source register (ALUop2) to be the sign extneded immediate value
+assign ALUsrc =(op==7'b0000011 |op==7'b0100011 | op==7'b0010011) ? 1'b1 : 1'b0 ;
+//If there is a Branch type then we want to branch only when not equal
+logic Branch = ((op==7'b1100011)? 1'b1 : 1'b0);
+//If there is a Branch instruction then the ALUctrl value is 001 to indiicate we want to compare, or else it is 000 indicating we add (Only using 2 instructions for Lab-4)q
+assign ALUctrl = (op==7'b1100011) ? 3'b001 : 3'b000 ;
+                                 
+//If there is a Branch instruction then depending on the func3 field we can identify whether we do a BEQ or BNE and so we want PCsrc=1 if BNE (Branch and ~EQ) and want PCsrc=1 if BEQ (Branch and EQ)
+always_comb begin
+    case (func3)
+        ///beq instruction
+        3'b000:
+            assign PCsrc = Branch & EQ ;
+        //bne instruction
+        3'b001:
+            assign PCsrc = Branch & ~EQ ;
     endcase
 end
-
-
 endmodule
+
