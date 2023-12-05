@@ -7,7 +7,7 @@ module datamem(
 );
 
 // byte-addressed memory
-logic [7:0] mem_array [512:0];
+logic [7:0] mem_array [131071:0];
 
 always_ff @(posedge clk)
     begin
