@@ -5,7 +5,7 @@
 #include <thread>
 
 // #include "vbuddy.cpp"
-#define MAX_SIM_CYC 500
+#define MAX_SIM_CYC 5000
 
 int main(int argc, char **argv, char **env){
     int simcyc;

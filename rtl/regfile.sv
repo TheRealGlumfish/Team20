@@ -14,7 +14,7 @@ logic [31:0] registers[31];
 
 always_ff@(posedge clk)
     if (WE3 && AD3 != 0)
-        registers[AD3] <= WD3;
+        registers[AD3 - 1] <= WD3;
 
 always_comb
 begin
