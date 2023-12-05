@@ -8,9 +8,9 @@ module alu(
 
 always_comb
 begin
-   if(ALUctrl== 3'b000)
-        ALUout = ALUop1 + ALUop2;
+    ALUout = ALUop1 + ALUop2;
     EQ = (ALUop1 == ALUop2);
 end
 
 endmodule
+
