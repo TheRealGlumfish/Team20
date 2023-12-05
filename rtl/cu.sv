@@ -1,6 +1,6 @@
 module cu(
     input logic [31:0] instr,
-    input logic EQ, // TODO: Change to zero
+    input logic Zero, // TODO: Change to zero
     output logic  PCsrc,
     // output logic  ResultSrc,
     // output logic  MemWrite,
@@ -34,10 +34,10 @@ always_comb begin
     case (func3)
         ///beq instruction
         3'b000:
-            assign PCsrc = Branch & EQ ;
+            assign PCsrc = Branch & Zero ;
         //bne instruction
         3'b001:
-            assign PCsrc = Branch & ~EQ ;
+            assign PCsrc = Branch & ~Zero ;
     endcase
 end
 endmodule

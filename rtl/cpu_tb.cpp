@@ -4,8 +4,8 @@
 #include <chrono>
 #include <thread>
 
-#include "vbuddy.cpp"
-#define MAX_SIM_CYC 10000
+// #include "vbuddy.cpp"
+#define MAX_SIM_CYC 500
 
 int main(int argc, char **argv, char **env){
     int simcyc;
@@ -20,11 +20,11 @@ int main(int argc, char **argv, char **env){
     tfp->open("cpu.vcd");
 
     //init vbuddy
-    if(vbdOpen()!=1) return(-1);
-    vbdHeader("Lab 4: CPU");
+    // if(vbdOpen()!=1) return(-1);
+    // vbdHeader("Lab 4: CPU");
 
     // set rotary button to "one-shot" mode
-    vbdSetMode(1);
+    // vbdSetMode(1);
 
     //initialise simulation inputs
     top->rst = 0;
@@ -38,24 +38,24 @@ int main(int argc, char **argv, char **env){
         }
 
         // rotary encoder can be used to slow simulation
-        std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
 
-        top->rst = vbdFlag();
+        // top->rst = vbdFlag();
 
         // displays CPU output
-        vbdHex(4, (int(top->a0) >> 16) & 0xF);
-        vbdHex(3, (int(top->a0) >> 8) & 0xF);
-        vbdHex(2, (int(top->a0) >> 4) & 0xF);
-        vbdHex(1, (int(top->a0)) & 0xF);
+        // vbdHex(4, (int(top->a0) >> 16) & 0xF);
+        // vbdHex(3, (int(top->a0) >> 8) & 0xF);
+        // vbdHex(2, (int(top->a0) >> 4) & 0xF);
+        // vbdHex(1, (int(top->a0)) & 0xF);
 
-        if((Verilated::gotFinish()) || (vbdGetkey() == 'q')) {
-            vbdClose();
+        if((Verilated::gotFinish()) /*|| (vbdGetkey() == 'q')*/) {
+            // vbdClose();
             tfp->close();
             exit(0);
         }
 
     }
-    vbdClose();
+    // vbdClose();
     tfp->close();
     exit(0);
 }

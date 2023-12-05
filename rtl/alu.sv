@@ -14,7 +14,7 @@ begin
         3'b001: // subtract
             ALUout = ALUop1 - ALUop2;
         3'b101: // less than
-            ALUout = {31'b0 ,ALUop1 < ALUop2};
+            ALUout = {31'b0, ALUop1 < ALUop2};
         3'b011: // bitwise OR
             ALUout = ALUop1 | ALUop2;
         3'b010: // bitwise AND
