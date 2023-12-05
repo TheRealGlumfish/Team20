@@ -10,17 +10,23 @@ module regfile(
     output logic [31:0] a0
 );
 
-logic [31:0] registers[32];
+logic [31:0] registers[31];
 
 always_ff@(posedge clk)
-    if (WE3)
+    if (WE3 && AD3 != 0)
         registers[AD3] <= WD3;
 
-always_comb begin
-    RD1 = registers[AD1];
-    RD2 = registers[AD2];    
-    a0 = registers[10];
-    registers[0] = 0;
+always_comb
+begin
+    if(AD1 != 0)
+        RD1 = registers[AD1 - 1];
+    else
+        RD1 = 32'b0;
+    if(AD2 != 0)
+        RD2 = registers[AD2 - 1];
+    else
+        RD2 = 32'b0;
+    a0 = registers[10 - 1];
 end
 
 endmodule

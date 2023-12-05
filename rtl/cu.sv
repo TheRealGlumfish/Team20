@@ -1,6 +1,6 @@
 module cu(
     input logic [31:0] instr,
-    input logic EQ,
+    input logic EQ, // TODO: Change to zero
     output logic  PCsrc,
     // output logic  ResultSrc,
     // output logic  MemWrite,
