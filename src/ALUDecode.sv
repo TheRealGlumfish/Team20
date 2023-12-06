@@ -15,11 +15,11 @@ logic [1:0] op5func7={op[5],func7[5]};
 
 always_comb begin
     case(ALUOp)
-        3'b00: 
+        2'b00: 
             assign ALUControl =  3'b000 ;
-        3'b01:
+        2'b01:
             assign ALUControl = 3'b001 ;
-        3'b10:
+        2'b10:
             case(func3)
                 3'b000: //add (func3=000 and op[5]fucn7[5] = 00 or 01 or 10) and subtract (func3=000 and op[5]func7[5]=11)
                     assign ALUControl = (op5func7==2'b00 | op5func7==2'b01 | op5func7==2'b10) ? 3'b000 : (op5func7==2'b11) ? 3'b001 : 3'b111 ;
