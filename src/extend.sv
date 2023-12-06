@@ -3,7 +3,7 @@ module extend #(
 ) (
     input logic [INSTRUCTION_WIDTH-1:0] Instr,
     input logic [1:0] ImmSrc,
-    output logic ImmExt
+    output logic [31:0] ImmExt
 );
 
 always_comb begin
