@@ -1,4 +1,4 @@
-module extend #(
+module se #(
     parameter INSTRUCTION_WIDTH = 32
 ) (
     input logic [INSTRUCTION_WIDTH-1:0] Instr,
