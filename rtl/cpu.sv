@@ -50,7 +50,7 @@ alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 
 datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
 
-assign result = ResultSrc ? ReadData : regOp2;
+assign result = ResultSrc ? ReadData : ALUout;
 
 
 endmodule
