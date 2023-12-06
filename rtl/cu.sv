@@ -10,11 +10,15 @@ module cu(
     output logic [2:0] ALUctrl
 );
 
-logic [6:0] op = instr[6:0];
-logic [6:0] func7 = instr[31:25];
-logic [2:0] func3 = instr[14:12];
+logic [6:0] op;
+logic [6:0] func7;
+logic [2:0] func3;
 logic Branch;
 logic [1:0] ALUOp;
+
+assign op = instr[6:0];
+assign func7 = instr[31:25];
+assign func3 = instr[14:12];
 
 //If there is a lw or R-type or I-type Then we want to write to the registers
 assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011) ? 1'b1 : 1'b0;
@@ -32,12 +36,14 @@ ALUDecode ALUDecode(op,func3,func7,ALUOp,ALUctrl);
 //If there is a Branch instruction then depending on the func3 field we can identify whether we do a BEQ or BNE and so we want PCsrc=1 if BNE (Branch and ~EQ) and want PCsrc=1 if BEQ (Branch and EQ)
 always_comb begin
     case (func3)
-        ///beq instruction
+        // beq instruction
         3'b000:
-            assign PCsrc = Branch & Zero ;
-        //bne instruction
+            PCsrc = Branch & Zero;
+        // bne instruction
         3'b001:
-            assign PCsrc = Branch & ~Zero ;
+            PCsrc = Branch & ~Zero;
+        default:
+            PCsrc = 0; // default cause needs to be handled
     endcase
 end
 endmodule
