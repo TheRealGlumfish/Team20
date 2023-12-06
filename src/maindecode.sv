@@ -14,7 +14,7 @@ logic Branch;
 
 assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011) ? 1'b1 : 1'b0;
 //If there is a Branch type Then we want to select the  verion of sign extention needed for the branch instruction
-assign ImmSrc = ((op==7'b1100011) ? 2'b10 : (op==7'b0100011) ? 2'b01: 2'b00);
+assign ImmSrc = ((op==7'b1100011) ? 2'b10 : (op==7'b0100011) ? 2'b01: (op==7'b0000011)? 2'b00 : 2'b11);
 //If there is a lw or sw or I-type Then we want to the source register (ALUop2) to be the sign extneded immediate value
 assign ALUsrc =(op==7'b0000011 |op==7'b0100011 | op==7'b0010011) ? 1'b1 : 1'b0 ;
 //If there is a Branch type then we want to branch only when not equal
