@@ -18,8 +18,10 @@ logic [4:0] rs1;
 logic [4:0] rs2;
 logic [4:0] rd;
 logic RegWrite;
-logic ImmSrc;
+logic [1:0] ImmSrc;
 logic [31:0] ImmOp;
+logic MemWrite;
+logic ResultSrc;
 
 // PCMEM
 logic PCsrc;
@@ -30,7 +32,7 @@ logic [31:0] instr;
 
 pc Pc(clk, rst, PCsrc, ImmOp, PC);
 rom Rom(PC, instr);
-cu Cu(instr, Zero, PCsrc, ALUsrc, RegWrite, ImmSrc, ALUctrl);
+cu Cu(instr, Zero, PCsrc, ResultSrc, MemWrite, ALUsrc, RegWrite, ImmSrc, ALUctrl);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
