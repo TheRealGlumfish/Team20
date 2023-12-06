@@ -9,11 +9,12 @@ module pc(
 
 // Ensures that in the beginning our PC value is 0 in beginning, preventing undefined behaviour
 initial 
-    PC = 0;
+    // this value is the start of instruction memory
+    PC = 'hbfc00000;
 
 always_ff @(posedge clk) 
     if(rst)
-        PC <= 0; // mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
+        PC <= 'hbfc00000; //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
     else 
         PC <= PCsrc ? PC + ImmOp : PC + 4 ;
 
