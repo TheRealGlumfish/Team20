@@ -23,6 +23,9 @@ logic [31:0] ImmOp;
 logic MemWrite;
 logic ResultSrc;
 
+logic [31:0] ReadData;
+logic [31:0] result;
+
 // PCMEM
 logic PCsrc;
 logic [31:0] PC;
@@ -31,14 +34,23 @@ logic [31:0] PC;
 logic [31:0] instr;
 
 pc Pc(clk, rst, PCsrc, ImmOp, PC);
-rom Rom(PC, instr);
+
+
+instrmem instrmem(PC, instr);
+
+
 cu Cu(instr, Zero, PCsrc, ResultSrc, MemWrite, ALUsrc, RegWrite, ImmSrc, ALUctrl);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
 assign rd = instr[11:7];
-regfile RegFile(clk, rs1, rs2, rd, RegWrite, ALUout, ALUop1, regOp2, a0);
+regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
+
+datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
+
+assign result = ResultSrc ? ReadData : regOp2;
+
 
 endmodule
