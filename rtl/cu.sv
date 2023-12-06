@@ -18,7 +18,7 @@ logic Branch;
 
 assign op = instr[6:0];
 assign func7 = instr[31:25];
-assign func3 instr[14:12];
+assign func3 = instr[14:12];
 
 maindecode maindecode(op, Zero, PCsrc, ResultSrc, MemWrite, ALUsrc, ImmSrc, RegWrite,ALUop);
 ALUDecode ALUDecode(op, func3, func7, ALUop, ALUctrl); 
