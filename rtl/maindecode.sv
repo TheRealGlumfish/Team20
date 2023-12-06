@@ -10,6 +10,16 @@ module maindecode(
     output logic Branch,
     output logic Jump
 );
+//assign ResultSrc = (op==7'b1101111) ? 2'b10 : (op==7'b0000011) ? 2'b01 : (op==7'b0110011 | op==7'b0010011) ? 2'b00 : 2'b11;
+
+always_comb begin
+    if(op==7'b1101111)
+        assign ResultSrc=2'b10;
+    if (op==7'b0000011)
+        assign ResultSrc=2'b01;
+    else if (op==7'b0110011 || op==7'b0010011) 
+       assign ResultSrc=2'b00;
+end
 
 assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011 | op==7'b1101111) ? 1'b1 : 1'b0;
 //If there is a Branch type Then we want to select the  verion of sign extention needed for the branch instruction
@@ -23,11 +33,27 @@ assign Branch = ((op==7'b1100011)? 1'b1 : 1'b0);
 //assign PCsrc = ((op==7'b1101111)? 1'b0 : 1'b1);
 //ALU op logic 2 bits
 assign ALUop = (op==7'b1100011) ? 2'b01 : (op==7'b0110011) ? 2'b10 : 2'b00 ;
-//Resultsrc logic is 10 if JAL or JALR, is 01 for lw, is 00 for R-type and I-type ALU rest are dontcares (11)
-assign ResultSrc = ((op==7'b0000011) ? 2'b01 : (op==7'b0110011 | 7'b0010011) ? 2'b00 : (op==7'b1101111 | op==7'b1100111) ? 2'b10 : 2'b11);
+
 //Memwrite stays 0 unless op is 0100011
 assign MemWrite = ((op==7'b0100011) ? 1'b1 : 1'b0);
-//Jump instructions    
-assign Jump = ((op==7'b1101111 | op==7'b1100111) ? 1'b1 : 1'b0);
+//Jump instructions - JLAR is a Itype isntrution therefor does not use this. probably have to check func 3 field of the JALR to distinguish then set Jump to high if the fucn3 field matches, will work on tis tommorow
+assign Jump = ((op==7'b1101111) ? 1'b1 : 1'b0);
 
+//Resultsrc logic is 10 if JAL and is 01 for lw and is 00 for R-type and I-type ALU rest are dontcares (11)
+// assign ResultSrc = (op==7'b1101111) ? 2'b10 : (op==7'b0000011) ? 2'b01 : (op==7'b0110011 | op==7'b0010011) ? 2'b00 : 2'b11;
+/*always_comb begin
+    case(op)
+        7'b1101111:
+           assign ResultSrc =2'b10;
+        7'b0000011:
+            assign ResultSrc =2'b01;
+        7'b0110011:
+            assign ResultSrc =2'b00;
+        7'b0010011:
+            assign ResultSrc =2'b00;
+        default:
+            assign ResultSrc =2'b11;
+endcase
+end
+*/
 endmodule

@@ -2,7 +2,7 @@ module cu(
     input logic [31:0] instr,
     input logic Zero, // TODO: Change to zero
     output logic  PCsrc,
-    output logic  ResultSrc,
+    output logic [1:0]  ResultSrc,
     output logic  MemWrite,
     output logic  ALUsrc,
     output logic  RegWrite,
@@ -16,6 +16,7 @@ logic [6:0] func7;
 logic [2:0] func3;
 logic [1:0] ALUop; 
 logic Branch;
+logic BranchandZero;
 
 assign op = instr[6:0];
 assign func7 = instr[31:25];
@@ -30,13 +31,16 @@ begin
     case (func3)
         // beq instruction
         3'b000:
-            PCsrc = Branch & Zero;
+            BranchandZero = Branch & Zero;
         // bne instruction
         3'b001:
-            PCsrc = Branch & ~Zero;
+            BranchandZero = Branch & ~Zero;
         default:
-            PCsrc = 0; // should never be reached
+            BranchandZero = 0; // should never be reached
     endcase
 end
+
+//If there is a jump then PCsrc =1 ie, PC source 1 if beq, bne or Jump
+assign PCsrc = (BranchandZero | Jump);
 
 endmodule
