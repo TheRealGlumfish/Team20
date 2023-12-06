@@ -6,8 +6,9 @@ module cu(
     output logic  MemWrite,
     output logic  ALUsrc,
     output logic  RegWrite,
-    output logic  [1:0] ImmSrc,
-    output logic [2:0] ALUctrl
+    output logic  [2:0] ImmSrc,
+    output logic [2:0] ALUctrl,
+    output logic Jump
 );
 
 logic [6:0] op;
@@ -20,7 +21,7 @@ assign op = instr[6:0];
 assign func7 = instr[31:25];
 assign func3 = instr[14:12];
 
-maindecode maindecode(op, Zero, ResultSrc, MemWrite, ALUsrc, ImmSrc, RegWrite, ALUop, Branch);
+maindecode maindecode(op, Zero, ResultSrc, MemWrite, ALUsrc, ImmSrc, RegWrite, ALUop, Branch, Jump);
 ALUDecode ALUDecode(op, func3, func7, ALUop, ALUctrl); 
 
 //If there is a Branch instruction then depending on the func3 field we can identify whether we do a BEQ or BNE and so we want PCsrc=1 if BNE (Branch and ~EQ) and want PCsrc=1 if BEQ (Branch and EQ)
