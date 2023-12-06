@@ -21,8 +21,8 @@ logic RegWrite;
 logic [1:0] ImmSrc;
 logic [31:0] ImmOp;
 logic MemWrite;
-logic ResultSrc;
 
+logic [1:0] ResultSrc;
 logic [31:0] ReadData;
 logic [31:0] result;
 
@@ -50,7 +50,17 @@ alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 
 datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
 
-assign result = ResultSrc ? ReadData : ALUout;
-
+always_comb begin
+    case(ResultSrc)
+    2'b00: 
+        result = ALUout;
+    2'b01:
+        result = ReadData; 
+    2'b10:
+        result = PC + 4; 
+    default:
+        result = ALUout; // should never be reached
+endcase
+end
 
 endmodule
