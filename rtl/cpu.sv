@@ -18,7 +18,7 @@ logic [4:0] rs1;
 logic [4:0] rs2;
 logic [4:0] rd;
 logic RegWrite;
-logic [1:0] ImmSrc;
+logic [2:0] ImmSrc;
 logic [31:0] ImmOp;
 logic MemWrite;
 
