@@ -7,7 +7,8 @@ module maindecode(
     output logic ALUsrc,
     output logic [1:0] ImmSrc,
     output logic RegWrite,
-    output logic [1:0] ALUop
+    output logic [1:0] ALUop,
+    output logic Branch
 );
 
 logic Branch;
@@ -20,7 +21,7 @@ assign ALUsrc =(op==7'b0000011 |op==7'b0100011 | op==7'b0010011) ? 1'b1 : 1'b0 ;
 //If there is a Branch type then we want to branch only when not equal
 assign Branch = ((op==7'b1100011)? 1'b1 : 1'b0);
 //JAL instruction so jumps 4 when is 0
-assign PCsrc = ((op==7'b1101111)? 1'b0 : 1'b1);
+//assign PCsrc = ((op==7'b1101111)? 1'b0 : 1'b1);
 //ALU op logic 2 bits
 assign ALUop = (op==7'b1100011) ? 2'b01 : (op==7'b0110011) ? 2'b10 : 2'b00 ;
 //Resultsrc logic
