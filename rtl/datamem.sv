@@ -10,22 +10,22 @@ module datamem(
 logic [7:0] mem_array [131071:0];
 
 always_ff @(posedge clk)
+begin
+	if(wen)
     begin
-        if(wen)
-            begin
-                mem_array[addr] <= wdata[7:0];
-                mem_array[addr+1] <= wdata[15:8];
-                mem_array[addr+2] <= wdata[23:16];
-                mem_array[addr+3] <= wdata[31:24];
-            end
-
-        dout <= {mem_array[addr], mem_array[addr+1], mem_array[addr+2], mem_array[addr+3]};
+		mem_array[addr] <= wdata[7:0];
+        mem_array[addr+1] <= wdata[15:8];
+        mem_array[addr+2] <= wdata[23:16];
+        mem_array[addr+3] <= wdata[31:24];
     end
 
-initial
-begin
-	display("Loading rom.");
-    readmemh("main.mem", mem_array);
+	dout <= {mem_array[addr], mem_array[addr+1], mem_array[addr+2], mem_array[addr+3]};
 end
+
+//initial
+//begin
+//	$display("Loading rom.");
+//    $readmemh("main.mem", mem_array);
+//end
 
 endmodule

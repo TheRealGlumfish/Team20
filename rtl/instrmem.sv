@@ -15,7 +15,8 @@ assign addr = {pc[31:2], 2'b0} - 'hbfc00000;
 assign dout = {mem_array[addr], mem_array[addr+1], mem_array[addr+2],mem_array[addr+3]};
 
 // initialises memory with the program.
-initial begin
+initial
+begin
 	$display("Loading rom.");
     $readmemh("main.mem", mem_array);
 end
