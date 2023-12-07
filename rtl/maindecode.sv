@@ -13,7 +13,7 @@ module maindecode(
 //assign ResultSrc = (op==7'b1101111) ? 2'b10 : (op==7'b0000011) ? 2'b01 : (op==7'b0110011 | op==7'b0010011) ? 2'b00 : 2'b11;
 
 always_comb begin
-    if(op==7'b1101111)
+    if(op==7'b1101111 | op==7'b1100111)
         assign ResultSrc=2'b10;
     if (op==7'b0000011)
         assign ResultSrc=2'b01;
