@@ -1,4 +1,6 @@
-module datamem(
+module datamem#(
+    parameter MEM_SIZE = 131072
+)(
     input logic clk,
     input logic [31:0] addr,
     input logic [31:0] wdata,
@@ -7,7 +9,7 @@ module datamem(
 );
 
 // byte-addressed memory
-logic [7:0] mem_array [131071:0];
+logic [7:0] mem_array [MEM_SIZE-1:0];
 
 assign dout = {mem_array[addr], mem_array[addr+1], mem_array[addr+2], mem_array[addr+3]};
 
