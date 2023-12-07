@@ -1,5 +1,6 @@
 module datamem#(
-    parameter MEM_SIZE = 131072
+    parameter MEM_SIZE = 131072,
+    USABLE_MEM_START = 'h10000
 )(
     input logic clk,
     input logic [31:0] addr,
@@ -27,7 +28,7 @@ end
 initial
 begin
 	$display("Loading data memory.");
-   $readmemh("sinerom.mem", mem_array);
+   $readmemh("triangle.mem", mem_array, USABLE_MEM_START);
 end
 
 endmodule
