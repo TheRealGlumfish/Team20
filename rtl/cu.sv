@@ -2,6 +2,7 @@ module cu(
     input logic [31:0] instr,
     input logic Zero, // TODO: Change to zero
     output logic  PCsrc,
+    output logic  JALR,
     output logic [1:0]  ResultSrc,
     output logic  MemWrite,
     output logic  ALUsrc,
@@ -42,5 +43,6 @@ end
 
 //If there is a jump then PCsrc =1 ie, PC source 1 if beq, bne or Jump
 assign PCsrc = (BranchandZero | Jump);
+assign JALR = op==7'b1100111; //if op==JALR then raise the JALR flag for the PC to take in the aluout value
 
 endmodule

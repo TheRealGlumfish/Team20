@@ -25,6 +25,7 @@ logic MemWrite;
 logic [1:0] ResultSrc;
 logic [31:0] ReadData;
 logic [31:0] result;
+logic [31:0] pcaluout;
 
 // PCMEM
 logic PCsrc;
@@ -33,21 +34,24 @@ logic [31:0] PC;
 // ROM
 logic [31:0] instr;
 
-pc Pc(clk, rst, PCsrc, ImmOp, PC);
 
 
 instrmem instrmem(PC, instr);
 
+pc Pc(clk, rst, PCsrc, JALR, pcaluout, ImmOp, PC);
 
-cu Cu(instr, Zero, PCsrc, ResultSrc, MemWrite, ALUsrc, RegWrite, ImmSrc, ALUctrl);
+cu Cu(instr, Zero, PCsrc, JALR, ResultSrc, MemWrite, ALUsrc, RegWrite, ImmSrc, ALUctrl);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
 assign rd = instr[11:7];
+
+// assign result = (ResultSrc = 2'b00) ? ALUout : (ResultSrc = 2'b01) ? ReadData : (ResultSrc = 2'b10) ? PC + 1'd4 : ALUout ;
+
 regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
-
+assign pcaluout = ALUout;
 datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
 
 always_comb begin
