@@ -60,9 +60,9 @@ always_comb begin
     2'b01:
         result = ReadData; 
     2'b10:
-        result = PC + 4; 
-    default:
-        result = ALUout; // should never be reached
+        result = PC + 4;
+    2'b11:
+        result = ImmOp;
 endcase
 end
 

@@ -2,6 +2,7 @@ module maindecode(
     input logic [6:0] op,
     input logic EQ,
     output logic [1:0] ResultSrc,
+
     output logic MemWrite,
     output logic ALUsrc,
     output logic [2:0] ImmSrc,
@@ -15,18 +16,20 @@ module maindecode(
 always_comb begin
     if(op==7'b1101111 | op==7'b1100111) //JAL or JALR (we want to select the PC+4 line to write into the destination reg)
         assign ResultSrc=2'b10;
-    if (op==7'b0000011) //lw
+    else if (op==7'b0000011) //lw
         assign ResultSrc=2'b01;
     else if (op==7'b0110011 || op==7'b0010011) //R-type or I-Type
        assign ResultSrc=2'b00;
+    else if(op==7'b0110111)
+        assign ResultSrc=2'b11;
 end
 
-assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011 | op==7'b1101111 | op==7'b1100111) ? 1'b1 : 1'b0;
+assign RegWrite = (op==7'b0110111 | op==7'b0000011 | op==7'b0110011 | op==7'b0010011 | op==7'b1101111 | op==7'b1100111) ? 1'b1 : 1'b0;
 
 //if Branch ImmSrc = 010, if store ImmSrc = 001, if lw or I or JALR ImmSrc is 000, if Jump IMmsrc is 011 else 111
-assign ImmSrc = ((op==7'b1100011) ? 3'b010 : (op==7'b0100011) ? 3'b001: (op==7'b0000011 | op==7'b0010011 | op==7'b1100111| op==7'b1100111)? 3'b000 : (op==7'b1101111 ) ? 3'b011: 3'b111);
+assign ImmSrc = ((op==7'b0110111) ? 3'b100 : (op==7'b1100011) ? 3'b010 : (op==7'b0100011) ? 3'b001: (op==7'b0000011 | op==7'b0010011 | op==7'b1100111| op==7'b1100111)? 3'b000 : (op==7'b1101111 ) ? 3'b011: 3'b111);
 //If there is a lw or sw or I- (Including JALR) Then we want to the source register (ALUop2) to be the sign extneded immediate value
-assign ALUsrc =(op==7'b0000011 |op==7'b0100011 | op==7'b0010011 | op==7'b1100111) ? 1'b1 : 1'b0 ;
+assign ALUsrc =(op==7'b0000011 | op==7'b0100011 | op==7'b0010011 | op==7'b1100111) ? 1'b1 : 1'b0 ;
 //If there is a Branch type then we want to branch only when not equal
 assign Branch = ((op==7'b1100011)? 1'b1 : 1'b0);
 //JAL instruction so jumps 4 when is 0
