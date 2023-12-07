@@ -22,7 +22,7 @@ always_ff @(posedge clk) begin
     else
         begin
             if(JALR)
-                PC <= aluout +'hbfc00000;
+                PC <= aluout;
             else
                 begin
                 if(PCsrc)
