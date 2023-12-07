@@ -19,11 +19,19 @@ logic [31:0] target ;
 always_ff @(posedge clk) begin
     if(rst)
         PC <= 'hbfc00000; //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
-    else begin
-        //PC <= PCsrc ? PC + ImmOp : PC + 4 ;
-        target <= aluout+'hbfc00000; //The way the instuction mem map works, we need to offset the alu val by the val of the start of instruction mem 
-        PC <= JALR ? target : (PCsrc ? PC + ImmOp  : PC +4 );
-    end
+    else
+        begin
+            if(JALR)
+                PC <= aluout +'hbfc00000;
+            else
+                begin
+                if(PCsrc)
+                    PC <= PC + ImmOp;
+                else
+                    PC <= PC + 4;
+                end
+        end
+        
 end
 endmodule
 

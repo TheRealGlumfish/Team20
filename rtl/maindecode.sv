@@ -24,7 +24,7 @@ end
 assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011 | op==7'b1101111 | op==7'b1100111) ? 1'b1 : 1'b0;
 
 //if Branch ImmSrc = 010, if store ImmSrc = 001, if lw or I or JALR ImmSrc is 000, if Jump IMmsrc is 011 else 111
-assign ImmSrc = ((op==7'b1100011) ? 3'b010 : (op==7'b0100011) ? 3'b001: (op==7'b0000011 | op==7'b0010011 | op==7'b1100111)? 3'b000 : (op==7'b1101111 | op==7'b1100111) ? 3'b011: 3'b111);
+assign ImmSrc = ((op==7'b1100011) ? 3'b010 : (op==7'b0100011) ? 3'b001: (op==7'b0000011 | op==7'b0010011 | op==7'b1100111| op==7'b1100111)? 3'b000 : (op==7'b1101111 ) ? 3'b011: 3'b111);
 //If there is a lw or sw or I- (Including JALR) Then we want to the source register (ALUop2) to be the sign extneded immediate value
 assign ALUsrc =(op==7'b0000011 |op==7'b0100011 | op==7'b0010011 | op==7'b1100111) ? 1'b1 : 1'b0 ;
 //If there is a Branch type then we want to branch only when not equal
