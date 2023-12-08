@@ -9,7 +9,7 @@ logic ALUsrc;
 logic [31:0] ALUop1;
 logic [31:0] ALUop2;
 logic [31:0] regOp2;
-logic [2:0] ALUctrl;
+logic [3:0] ALUctrl;
 logic [31:0] ALUout;
 logic Zero;
 
@@ -21,11 +21,11 @@ logic RegWrite;
 logic [2:0] ImmSrc;
 logic [31:0] ImmOp;
 logic MemWrite;
+logic JALR;
 
 logic [1:0] ResultSrc;
 logic [31:0] ReadData;
 logic [31:0] result;
-logic [31:0] pcaluout;
 
 // PCMEM
 logic PCsrc;
@@ -40,7 +40,7 @@ instrmem instrmem(PC, instr);
 
 pc Pc(clk, rst, PCsrc, JALR, ImmOp, ALUout, PC);
 
-cu Cu(instr, Zero, PCsrc, JALR, ResultSrc, MemWrite, ALUsrc, RegWrite, ImmSrc, ALUctrl);
+cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, ResultSrc, ImmSrc, ALUctrl);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
@@ -53,7 +53,8 @@ assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
 
-always_comb begin
+always_comb
+begin
     case(ResultSrc)
     2'b00: 
         result = ALUout;
