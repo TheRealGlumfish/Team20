@@ -85,7 +85,7 @@ begin
             ResultSrc= 2'b00; // Don't care
             MemWrite = 1;
             ALUsrc = 1;
-            ImmSrc = 3'b000;
+            ImmSrc = 3'b001;
             RegWrite = 0;
             ALUctrl = 4'b0000;
             case(funct3)
