@@ -1,48 +1,47 @@
 module cu(
     input logic [31:0] instr,
-    input logic Zero, // TODO: Change to zero
-    output logic  PCsrc,
-    output logic  JALR,
+    input logic Zero,
+    output logic JALR,
+    output logic MemWrite,
+    output logic RegWrite,
+    output logic PCsrc,
+    output logic ALUsrc,
     output logic [1:0]  ResultSrc,
-    output logic  MemWrite,
-    output logic  ALUsrc,
-    output logic  RegWrite,
-    output logic  [2:0] ImmSrc,
-    output logic [2:0] ALUctrl,
+    output logic [2:0] ImmSrc,
+    output logic [3:0] ALUctrl,
     output logic Jump
 );
 
 logic [6:0] op;
-logic [6:0] func7;
-logic [2:0] func3;
-logic [1:0] ALUop; 
-logic Branch;
-logic BranchandZero;
+logic [6:0] funct7;
+logic [2:0] funct3;
 
 assign op = instr[6:0];
-assign func7 = instr[31:25];
-assign func3 = instr[14:12];
+assign funct7 = instr[31:25];
+assign funct3 = instr[14:12];
 
-maindecode maindecode(op, Zero, ResultSrc, MemWrite, ALUsrc, ImmSrc, RegWrite, ALUop, Branch, Jump);
-ALUDecode ALUDecode(op, func3, func7, ALUop, ALUctrl); 
 
-//If there is a Branch instruction then depending on the func3 field we can identify whether we do a BEQ or BNE and so we want PCsrc=1 if BNE (Branch and ~EQ) and want PCsrc=1 if BEQ (Branch and EQ)
 always_comb
 begin
-    case (func3)
-        // beq instruction
-        3'b000:
-            BranchandZero = Branch & Zero;
-        // bne instruction
-        3'b001:
-            BranchandZero = Branch & ~Zero;
-        default:
-            BranchandZero = 0; // should never be reached
+    case(op)
+        7'b0110011: // R-Type instructions
+        begin
+            PCsrc = 0;
+            ResultSrc = 2'b00;
+            MemWrite = 0;
+            ALUsrc = 0;
+            ImmSrc = 2'b00; // Don't care
+            RegWrite = 1
+            ALUctrl = {funct7[5], funct3}; 
+        end
+        7'b0000011: // I-Type instructions (load)
+
+        7'b0010011: // I-Type instructions (arithmetic)
+
+        7'b0100011: // S-Type instructions
+
+        7'b1100011: // B-Type instructions
     endcase
 end
-
-//If there is a jump then PCsrc =1 ie, PC source 1 if beq, bne or Jump
-assign PCsrc = (BranchandZero | Jump);
-assign JALR = op==7'b1100111; //if op==JALR then raise the JALR flag for the PC to take in the aluout value
 
 endmodule
