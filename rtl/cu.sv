@@ -74,9 +74,9 @@ begin
         7'b1100011: // B-Type instructions
         begin
             ResultSrc = 2'b00;
-            MemWrite = 1;
-            ALUsrc = 1;
-            ImmSrc = 3'b00; // Potentially matters
+            MemWrite = 0;
+            ALUsrc = 0;
+            ImmSrc = 3'b010;
             RegWrite = 0;
             case(funct3)
                 3'b000: // beq
