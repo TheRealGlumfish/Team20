@@ -8,7 +8,7 @@ module alu(
 
 always_comb
 begin
-    case(ALUctrl)
+    case(ALUctrl) // TODO: Add XOR somehow
         3'b000: // add  
             ALUout = ALUop1 + ALUop2;
         3'b001: // subtract
@@ -19,6 +19,12 @@ begin
             ALUout = ALUop1 | ALUop2;
         3'b010: // bitwise AND
             ALUout = ALUop2 & ALUop2;
+        3'b110: // logical shift left
+            ALUout = ALUop1 << ALUop2[4:0];
+        3'b100: // logical shift right
+            ALUout = ALUop1 >> ALUop2[4:0];
+        3'b111: // arithmetic shift right
+            ALUout = ALUop1 >>> ALUop2[4:0];
         default: // should be unreachable
             ALUout = 32'hDEAD; // error magic number
     endcase

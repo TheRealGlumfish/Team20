@@ -19,19 +19,26 @@ always_comb
 begin
     case(ALUOp)
         2'b00: 
-            ALUControl =  3'b000 ;
+            ALUControl =  3'b000;
         2'b01:
-            ALUControl = 3'b001 ;
+            ALUControl = 3'b001;
         2'b10:
             case(func3)
                 3'b000: // add (func3=000 and op[5]fucn7[5] = 00 or 01 or 10) and subtract (func3=000 and op[5]func7[5]=11)
-                    ALUControl = (op5func7==2'b00 | op5func7==2'b01 | op5func7==2'b10) ? 3'b000 : (op5func7==2'b11) ? 3'b001 : 3'b111 ;
+                    ALUControl = (op5func7==2'b00 | op5func7==2'b01 | op5func7==2'b10) ? 3'b000 : (op5func7==2'b11) ? 3'b001 : 3'b111;
+                3'b001:
+                    ALUControl = 3'b110; // logical shift left
+                3'b101:
+                    if(func7 == 7'b0000000)
+                        ALUControl = 3'b100; // logical shift right
+                    else
+                        ALUControl = 3'b111; // arithmetic shift right
                 3'b010:
-                    ALUControl = 3'b101 ; // set less than
+                    ALUControl = 3'b101; // set less than
                 3'b110:
-                    ALUControl = 3'b011 ; // or
+                    ALUControl = 3'b011; // or
                 3'b111:
-                    ALUControl = 3'b010 ; // and
+                    ALUControl = 3'b010; // and
                 default:
                     ALUControl = 0; // should never be reached
             endcase
