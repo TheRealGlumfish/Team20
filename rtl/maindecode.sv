@@ -13,6 +13,11 @@ module maindecode(
 );
 //assign ResultSrc = (op==7'b1101111) ? 2'b10 : (op==7'b0000011) ? 2'b01 : (op==7'b0110011 | op==7'b0010011) ? 2'b00 : 2'b11;
 
+logic rType = op==7'b0110011;
+logic iType = op==7'b0000011 | op==7'b0010011;
+logic sType = op==7'b0100011;
+logic bType = op==7'b1100011;
+
 always_comb begin
     if(op==7'b1101111 | op==7'b1100111) //JAL or JALR (we want to select the PC+4 line to write into the destination reg)
         assign ResultSrc=2'b10;
