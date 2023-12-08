@@ -22,9 +22,11 @@ logic [2:0] ImmSrc;
 logic [31:0] ImmOp;
 logic MemWrite;
 logic JALR;
+logic[1:0] DataWidth;
 
 logic [1:0] ResultSrc;
 logic [31:0] ReadData;
+logic [31:0] PadderIn;
 logic [31:0] result;
 
 // PCMEM
@@ -40,7 +42,7 @@ instrmem instrmem(PC, instr);
 
 pc Pc(clk, rst, PCsrc, JALR, ImmOp, ALUout, PC);
 
-cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, ResultSrc, ImmSrc, ALUctrl);
+cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, ResultSrc, ImmSrc, ALUctrl, DataWidth);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
@@ -51,7 +53,7 @@ assign rd = instr[11:7];
 regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
-datamem datamem(clk, ALUout, regOp2, MemWrite, ReadData);
+datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ReadData);
 
 always_comb
 begin

@@ -8,7 +8,8 @@ module cu(
     output logic ALUsrc,
     output logic [1:0]  ResultSrc,
     output logic [2:0] ImmSrc,
-    output logic [3:0] ALUctrl
+    output logic [3:0] ALUctrl,
+    output logic [1:0] DataWidth
 );
 
 logic [6:0] op;
@@ -32,6 +33,7 @@ begin
             ImmSrc = 3'b000; // Don't care
             RegWrite = 1;
             ALUctrl = {funct7[5], funct3}; 
+            DataWidth = 2'b00;
         end
         7'b0000011: // I-Type instructions (load)
         begin // TODO: Check/fix unsigned variants
@@ -42,18 +44,18 @@ begin
            ImmSrc = 3'b000;
            RegWrite = 1;
            ALUctrl = 4'b0000;
-           // case(funct3)
-           //      3'b000: // load byte
-           //
-           //      3'b001: // load half
-           //
-           //      3'b010: // load word
-           //
-           //      3'b100: // load byte unsigned
-           //
-           //      3'b101: // load half unsigned
-           //
-           // endcase
+           case(funct3)
+                3'b000: // load byte
+                    DataWidth = 2'b10;
+                3'b001: // load half
+                    DataWidth = 2'b01;
+                3'b010: // load word
+                    DataWidth = 2'b00;
+                3'b100: // load byte unsigned
+                    DataWidth = 2'b10;
+                3'b101: // load half unsigned
+                    DataWidth = 2'b01;
+           endcase
         end
         7'b0010011: // I-Type instructions (arithmetic)
         begin
@@ -64,6 +66,7 @@ begin
             ImmSrc = 3'b000;
             RegWrite = 1;
             ALUctrl = {funct7[5], funct3}; 
+            DataWidth = 2'b00;
         end
         7'b1100111: // I-Type instructions (jalr)
         begin
@@ -74,6 +77,7 @@ begin
             ImmSrc = 3'b000;
             RegWrite = 1;
             ALUctrl = 4'b1001;
+            DataWidth = 2'b00;
         end
         7'b0100011: // S-Type instructions
         begin
@@ -84,14 +88,15 @@ begin
             ImmSrc = 3'b000;
             RegWrite = 0;
             ALUctrl = 4'b0000;
-            // case(funct3)
-            //     3'b000: // store byte
-            //
-            //     3'b001: // store half
-            //
-            //     3'b010: // store word
-            //
-            // endcase
+            case(funct3)
+                3'b000: // store byte
+                    DataWidth = 2'b10;
+                3'b001: // store half
+                    DataWidth = 2'b01;
+                3'b010: // store word
+                    DataWidth = 2'b00;
+            
+            endcase
         end
         7'b1100011: // B-Type instructions
         begin
@@ -100,6 +105,7 @@ begin
             ALUsrc = 0;
             ImmSrc = 3'b010;
             RegWrite = 0;
+            DataWidth = 2'b00;
             case(funct3)
                 3'b000: // beq
                 begin
@@ -146,6 +152,7 @@ begin
             ImmSrc = 3'b100;
             RegWrite = 1;
             ALUctrl = 4'b0000; // Don't care
+            DataWidth = 2'b00;
         end
         7'b1101111: // J-Type instructions (jal)
         begin
@@ -156,6 +163,7 @@ begin
            ALUsrc = 1;
            ImmSrc = 3'b011;
            RegWrite = 1;
+           DataWidth = 2'b00;
         end
     endcase
 end
