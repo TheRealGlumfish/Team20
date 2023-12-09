@@ -7,7 +7,7 @@
 #include "vbuddy.cpp"
 
 // #include "vbuddy.cpp"
-#define MAX_SIM_CYC 10000000
+#define MAX_SIM_CYC 1000000
 
 int main(int argc, char **argv, char **env){
     int simcyc;
@@ -21,9 +21,9 @@ int main(int argc, char **argv, char **env){
     top->trace(tfp, 99);
     tfp->open("cpu.vcd");
 
-    //init vbuddy
-    // if(vbdOpen()!=1) return(-1);
-    // vbdHeader("Lab 4: CPU");
+    // init vbuddy
+    if(vbdOpen()!=1) return(-1);
+    vbdHeader("Lab 4: CPU");
 
     // set rotary button to "one-shot" mode
     // vbdSetMode(1);
