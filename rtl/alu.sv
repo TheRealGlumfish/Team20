@@ -30,7 +30,7 @@ begin
         4'b0111: // bitwise AND
             ALUout = ALUop2 & ALUop2;
         default: // should be unreachable
-            ALUout = 32'hDEAD; // error magic number
+            ALUout = 32'hDEAA; // error magic number
     endcase
     Zero = ALUout == 0;
 end

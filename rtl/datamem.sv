@@ -56,7 +56,7 @@ end
 initial
 begin
 	$display("Loading data memory.");
-   $readmemh("triangle.mem", mem_array, USABLE_MEM_START);
+   $readmemh("gaussian.mem", mem_array, USABLE_MEM_START);
 end
 
 endmodule
