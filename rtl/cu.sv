@@ -65,7 +65,7 @@ begin
             ALUsrc = 1;
             ImmSrc = 3'b000;
             RegWrite = 1;
-            ALUctrl = {funct7[5], funct3}; 
+            ALUctrl = {1'b0, funct3}; 
             DataWidth = 2'b00;
         end
         7'b1100111: // I-Type instructions (jalr)
