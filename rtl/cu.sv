@@ -1,44 +1,171 @@
 module cu(
     input logic [31:0] instr,
-    input logic Zero, // TODO: Change to zero
-    output logic  PCsrc,
-    // output logic  ResultSrc,
-    // output logic  MemWrite,
-    output logic  ALUsrc,
-    output logic  RegWrite,
-    output logic  ImmSrc,
-    output logic [2:0] ALUctrl
+    input logic Zero,
+    output logic JALR,
+    output logic MemWrite,
+    output logic RegWrite,
+    output logic PCsrc,
+    output logic ALUsrc,
+    output logic [1:0]  ResultSrc,
+    output logic [2:0] ImmSrc,
+    output logic [3:0] ALUctrl,
+    output logic [2:0] DataWidth
 );
 
-logic [6:0] op = instr[6:0];
-logic [6:0] func7 = instr[31:25];
-logic [2:0] func3 = instr[14:12];
-logic Branch;
-logic [1:0] ALUOp;
+logic [6:0] op;
+logic [6:0] funct7;
+logic [2:0] funct3;
 
-//If there is a lw or R-type or I-type Then we want to write to the registers
-assign RegWrite = (op==7'b0000011 |op==7'b0110011 | op==7'b0010011) ? 1'b1 : 1'b0;
-//If there is a Branch type Then we want to select the  verion of sign extention needed for the branch instruction
-assign ImmSrc = (op==7'b1100011) ? 1'b1 : 0;
-//If there is a lw or sw or I-type Then we want to the source register (ALUop2) to be the sign extneded immediate value
-assign ALUsrc = (op==7'b0000011 |op==7'b0100011 | op==7'b0010011) ? 1'b1 : 1'b0 ;
-//If there is a Branch type then we want to branch only when not equal
-assign Branch = ((op==7'b1100011)? 1'b1 : 1'b0);
-//If there is a Branch instruction then the ALUctrl value is 001 to indiicate we want to compare, or else it is 000 indicating we add (Only using 2 instructions for Lab-4)q
-assign ALUOp = (op==7'b1100011) ? 2'b01 : (op==7'b0110011) ? 2'b10 : 2'b00 ;
-//ALU Decode logic, will return the ALUctrl as output
-ALUDecode ALUDecode(op,func3,func7,ALUOp,ALUctrl);
+assign op = instr[6:0];
+assign funct7 = instr[31:25];
+assign funct3 = instr[14:12];
+assign JALR = op == 7'b1100111;
 
-//If there is a Branch instruction then depending on the func3 field we can identify whether we do a BEQ or BNE and so we want PCsrc=1 if BNE (Branch and ~EQ) and want PCsrc=1 if BEQ (Branch and EQ)
-always_comb begin
-    case (func3)
-        ///beq instruction
-        3'b000:
-            assign PCsrc = Branch & Zero ;
-        //bne instruction
-        3'b001:
-            assign PCsrc = Branch & ~Zero ;
+always_comb
+begin
+    case(op)
+        7'b0110011: // R-Type instructions
+        begin // TODO: Check/fix unsigned variants
+            PCsrc = 0;
+            ResultSrc = 2'b00; // read from ALU
+            MemWrite = 0;
+            ALUsrc = 0;
+            ImmSrc = 3'b000; // Don't care
+            RegWrite = 1;
+            ALUctrl = {funct7[5], funct3}; 
+            DataWidth = 3'b000;
+        end
+        7'b0000011: // I-Type instructions (load)
+        begin // TODO: Check/fix unsigned variants
+           PCsrc = 0;
+           ResultSrc = 2'b01; // read from datamem
+           MemWrite = 0;
+           ALUsrc = 1;
+           ImmSrc = 3'b000;
+           RegWrite = 1;
+           ALUctrl = 4'b0000;
+           case(funct3)
+                3'b000: // load byte
+                    DataWidth = 3'b010;
+                3'b001: // load half
+                    DataWidth = 3'b001;
+                3'b010: // load word
+                    DataWidth = 3'b000;
+                3'b100: // load byte unsigned
+                    DataWidth = 3'b110;
+                3'b101: // load half unsigned
+                    DataWidth = 3'b101;
+           endcase
+        end
+        7'b0010011: // I-Type instructions (arithmetic)
+        begin
+            PCsrc = 0;
+            ResultSrc = 2'b00; // read from ALU
+            MemWrite = 0;
+            ALUsrc = 1;
+            ImmSrc = 3'b000;
+            RegWrite = 1;
+            ALUctrl = {1'b0, funct3}; 
+            DataWidth = 3'b000;
+        end
+        7'b1100111: // I-Type instructions (jalr)
+        begin
+            PCsrc = 1;
+            ResultSrc = 2'b10;
+            MemWrite = 0;
+            ALUsrc = 1;
+            ImmSrc = 3'b000;
+            RegWrite = 1;
+            ALUctrl = 4'b1001;
+            DataWidth = 3'b000;
+        end
+        7'b0100011: // S-Type instructions
+        begin
+            PCsrc = 0;
+            ResultSrc= 2'b00; // Don't care
+            MemWrite = 1;
+            ALUsrc = 1;
+            ImmSrc = 3'b001;
+            RegWrite = 0;
+            ALUctrl = 4'b0000;
+            case(funct3)
+                3'b000: // store byte
+                    DataWidth = 3'b010;
+                3'b001: // store half
+                    DataWidth = 3'b001;
+                3'b010: // store word
+                    DataWidth = 3'b000;
+            
+            endcase
+        end
+        7'b1100011: // B-Type instructions
+        begin
+            ResultSrc = 2'b00;
+            MemWrite = 0;
+            ALUsrc = 0;
+            ImmSrc = 3'b010;
+            RegWrite = 0;
+            DataWidth = 3'b000;
+            case(funct3)
+                3'b000: // beq
+                begin
+                    PCsrc = Zero;
+                    ALUctrl = 4'b1001;
+                end
+                3'b001: // bne
+                begin
+                    PCsrc = !Zero;
+                    ALUctrl = 4'b1001;
+                end
+                3'b100: // blt
+                begin
+                    PCsrc = !Zero;
+                    ALUctrl = 4'b0011;
+                end
+                3'b101: // bge
+                begin
+                    PCsrc = Zero;
+                    ALUctrl = 4'b0010;
+                end
+                3'b110: // bltu
+                begin
+                    PCsrc = !Zero;
+                    ALUctrl = 4'b0011;
+                end
+                3'b111: // bgeu
+                begin
+                    PCsrc = Zero;
+                    ALUctrl = 4'b0011;
+                end
+            endcase
+        end
+        // 7'b0010111: // U-Type instructions (auipc)
+        // begin
+        // 
+        // end
+        7'b0110111: // U-Type instructions (lui)
+        begin
+            PCsrc = 0;
+            ResultSrc = 2'b11;
+            MemWrite = 0;
+            ALUsrc = 0; // Don't care
+            ImmSrc = 3'b100;
+            RegWrite = 1;
+            ALUctrl = 4'b0000; // Don't care
+            DataWidth = 3'b000;
+        end
+        7'b1101111: // J-Type instructions (jal)
+        begin
+           PCsrc = 1;
+           ResultSrc = 2'b10;
+           MemWrite = 0;
+           ALUctrl = 4'b1001;
+           ALUsrc = 1;
+           ImmSrc = 3'b011;
+           RegWrite = 1;
+           DataWidth = 3'b000;
+        end
     endcase
 end
-endmodule
 
+endmodule

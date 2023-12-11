@@ -3,9 +3,11 @@
 #include "Vcpu.h"
 #include <chrono>
 #include <thread>
+#include <iostream>
+// #include "vbuddy.cpp"
 
 // #include "vbuddy.cpp"
-#define MAX_SIM_CYC 5000
+#define MAX_SIM_CYC 1000000
 
 int main(int argc, char **argv, char **env){
     int simcyc;
@@ -37,10 +39,17 @@ int main(int argc, char **argv, char **env){
             top->eval();
         }
 
+        // if(simcyc>790000){
+        //     vbdPlot(top->a0, 0, 255);
+        //     vbdCycle(simcyc);
+        // }
+
         // rotary encoder can be used to slow simulation
         // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
 
         // top->rst = vbdFlag();
+
+        //790,000
 
         // displays CPU output
         // vbdHex(4, (int(top->a0) >> 16) & 0xF);
