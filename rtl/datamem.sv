@@ -1,12 +1,14 @@
 module datamem#(
     parameter MEM_SIZE = 131072,
-    USABLE_MEM_START = 'h10000
+    USABLE_MEM_START = 'h10000,
+    IO_IN_ADDR = 32'hFFFFFFFF
 )(
     input logic clk,
     input logic [31:0] addr,
     input logic [31:0] wdata,
     input logic wen,
     input logic [2:0] DataWidth,
+    input logic [31:0] ioin,
     output logic [31:0] dout
 );
 
@@ -16,6 +18,9 @@ logic [31:0] wdata_padded;
 
 always_comb
 begin
+    if(addr > 32'hBFC00FFF)
+        dout = ioin;
+    else
     case(DataWidth)    
         3'b000:  // LW
             begin

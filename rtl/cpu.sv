@@ -1,6 +1,7 @@
 module cpu(
     input logic clk,
     input logic rst,
+    input logic [31:0] ioin,
     output logic [31:0] a0
 );
 
@@ -53,7 +54,7 @@ assign rd = instr[11:7];
 regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
-datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ReadData);
+datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ioin, ReadData);
 
 always_comb
 begin
