@@ -6,53 +6,114 @@ module cpu(
 );
 
 // ALU
-logic ALUsrc;
-logic [31:0] ALUop1;
-logic [31:0] ALUop2;
-logic [31:0] regOp2;
-logic [3:0] ALUctrl;
+logic ALUsrcD;
+logic ALUsrcE;
+
+logic [31:0] RD1D;
+logic [31:0] RD1E;
+logic [31:0] RD2D;
+logic [31:0] RD2E;
+
+logic [31:0] SrcAE;
+logic [31:0] SrcBE;
+
+logic [3:0] ALUctrlD;
+logic [3:0] ALUctrlF;
+
 logic [31:0] ALUout;
 logic Zero;
 
 // CU
-logic [4:0] rs1;
-logic [4:0] rs2;
-logic [4:0] rd;
-logic RegWrite;
-logic [2:0] ImmSrc;
-logic [31:0] ImmOp;
-logic MemWrite;
+logic [4:0] rs1D;
+logic [4:0] rs2D;
+logic [4:0] rs1E;
+logic [4:0] rs2E;
+logic [4:0] rdD;
+
+
+
+logic RegWriteD;
+logic RegWriteE;
+
+logic [2:0] ImmSrcD;
+
+logic [31:0] ImmExtD;
+logic [31:0] ImmExtE;
+
+logic MemWriteD;
+logic MemWriteF;
+
+
 logic JALR;
 logic[2:0] DataWidth;
 
-logic [1:0] ResultSrc;
+logic [1:0] ResultSrcD;
+logic [1:0] ResultSrcF;
+
+
 logic [31:0] ReadData;
 logic [31:0] PadderIn;
 logic [31:0] result;
 
 // PCMEM
-logic PCsrc;
-logic [31:0] PC;
+logic JumpD;
+logic JumpE;
+logic [31:0] PCF;
+logic [31:0] PCD;
+logic [31:0] PCPlus4F;
+logic [31:0] PCPlus4D;
+logic [31:0] PCPlus4E;
 
 // ROM
-logic [31:0] instr;
+logic [31:0] instrF;
+logic [31:0] instrD;
 
 
+// FETCH STAGE:
+instrmem instrmem(PCF, instrF);
+pc Pc(clk, rst, JumpD, JALR, ImmOp, ALUout, PCF);
+fetchff fetchff(clk, instrF, PCF, PCPlus4F, instrD, PCD, PCPlus4D);
 
-instrmem instrmem(PC, instr);
 
-pc Pc(clk, rst, PCsrc, JALR, ImmOp, ALUout, PC);
+// DECODE STAGE:
+cu Cu(instrD, Zero, JALR, MemWriteD, RegWriteD, JumpD, ALUsrcD, ResultSrcD, ImmSrcD, ALUctrlD, DataWidth);
+se Se(instrD, ImmSrcD, ImmExtD);
 
-cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, ResultSrc, ImmSrc, ALUctrl, DataWidth);
-se Se(instr, ImmSrc, ImmOp);
-assign rs1 = instr[19:15];
-assign rs2 = instr[24:20];
-assign rd = instr[11:7];
+assign rs1D = instr[19:15];
+assign rs2D = instr[24:20];
+assign rdD = instr[11:7];
 
-// assign result = (ResultSrc = 2'b00) ? ALUout : (ResultSrc = 2'b01) ? ReadData : (ResultSrc = 2'b10) ? PC + 1'd4 : ALUout ;
+regfile RegFile(clk, rs1D, rs2D, rdD, RegWrite, result, RD1D, RD2D, a0);
+decodeff decodeff(clk, RegWriteD, ResultSrcD, MemWriteD, JumpD, ALUCtrlD, ALUSrcD,
+                RegWriteE, ResultSrcE, MemWriteE, JumpE, ALUCtrlE, ALUSrcE,
+                RD1D, RD2D, PCD, rs1D, rs2D, rdD, ExtImmD, PCPlus4D,
+                RD1E, RD2E, PCE, rs1E, rs2E, rdE, ExtImmE, PCPlus4E);
 
-regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
-assign ALUop2 = ALUsrc ? ImmOp : regOp2;
+
+// EXECUTE STAGE:
+
+always_comb
+begin
+    case(ForwardAE)
+        2'b00:
+            SrcAE = RD1E;
+        2'b01:
+            SrcAE = result;
+        2'b10:
+            SrcAE = ALUResultM;
+    
+     case(ForwardBE)
+        2'b00:
+            regOp2 = RD2E;
+        2'b01:
+            regOp2 = result;
+        2'b10:
+            regOp2 = ALUResultM;
+end
+
+assign SrcBe = ALUsrcE ? ImmExtE : regOp2;
+
+
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ioin, ReadData);
 
