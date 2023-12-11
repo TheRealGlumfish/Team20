@@ -22,7 +22,7 @@ logic [2:0] ImmSrc;
 logic [31:0] ImmOp;
 logic MemWrite;
 logic JALR;
-logic[1:0] DataWidth;
+logic[2:0] DataWidth;
 
 logic [1:0] ResultSrc;
 logic [31:0] ReadData;

@@ -6,7 +6,7 @@ module datamem#(
     input logic [31:0] addr,
     input logic [31:0] wdata,
     input logic wen,
-    input logic [1:0] DataWidth,
+    input logic [2:0] DataWidth,
     output logic [31:0] dout
 );
 
@@ -16,23 +16,36 @@ logic [31:0] wdata_padded;
 
 always_comb
 begin
-    case(DataWidth)
-        2'b00:  // word from memory
+    case(DataWidth)    
+        3'b000:  // LW
             begin
                 dout = {mem_array[addr+3], mem_array[addr+2], mem_array[addr+1], mem_array[addr]};
                 wdata_padded = wdata;
             end
-        2'b01: // half word from memory (2 LSB's)
+        3'b001: // LH
+            begin
+                dout = {{16{mem_array[addr+1][3]}}, mem_array[addr+1], mem_array[addr]};
+                wdata_padded = {16'b0, wdata[15:0]};
+            end
+        3'b10: // LB
+            begin
+                dout = {{24{mem_array[addr][3]}}, mem_array[addr]};
+                wdata_padded = {24'b0, wdata[7:0]};
+            end
+
+        3'b101: // LHU
             begin
                 dout = {16'b0, mem_array[addr+1], mem_array[addr]};
                 wdata_padded = {16'b0, wdata[15:0]};
             end
-        2'b10: // LSB byte from memory
+
+        3'b10: // LBU
             begin
                 dout = {24'b0, mem_array[addr]};
                 wdata_padded = {24'b0, wdata[7:0]};
             end
-        default:
+
+        default: // default just load word
             begin
                 dout = {mem_array[addr+3], mem_array[addr+2], mem_array[addr+1], mem_array[addr]};
                 wdata_padded = wdata;
