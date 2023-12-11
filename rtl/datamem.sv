@@ -24,12 +24,12 @@ begin
             end
         3'b001: // LH
             begin
-                dout = {{16{mem_array[addr+1][3]}}, mem_array[addr+1], mem_array[addr]};
+                dout = {{16{mem_array[addr+1][7]}}, mem_array[addr+1], mem_array[addr]};
                 wdata_padded = {16'b0, wdata[15:0]};
             end
         3'b10: // LB
             begin
-                dout = {{24{mem_array[addr][3]}}, mem_array[addr]};
+                dout = {{24{mem_array[addr][7]}}, mem_array[addr]};
                 wdata_padded = {24'b0, wdata[7:0]};
             end
 
@@ -69,7 +69,7 @@ end
 initial
 begin
 	$display("Loading data memory.");
-   $readmemh("gaussian.mem", mem_array, USABLE_MEM_START);
+    $readmemh("gaussian.mem", mem_array, USABLE_MEM_START);
 end
 
 endmodule
