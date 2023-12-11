@@ -19,7 +19,10 @@ logic [31:0] wdata_padded;
 always_comb
 begin
     if(addr > 32'hBFC00FFF)
+    begin
         dout = ioin;
+        wdata_padded = wdata;
+    end
     else
     case(DataWidth)    
         3'b000:  // LW
