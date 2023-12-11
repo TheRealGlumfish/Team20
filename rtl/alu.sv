@@ -16,9 +16,15 @@ begin
         4'b0001: // logical shift left
             ALUout = ALUop1 << ALUop2[4:0];
         4'b0010: // less than
-            ALUout = {31'b0, ALUop1 < ALUop2};
+        begin
+            if(ALUop1[31] && ALUop2[31])
+                ALUout = {31'b0, ALUop1 > ALUop2};
+            if(!ALUop1[31] && !ALUop2[31]) 
+                ALUout = {31'b0, ALUop1 < ALUop2};
+            ALUout = {31'b0, ALUop1[31]};
+        end
         4'b0011: // less than unsigned
-            ALUout = {31'b0, ALUop1 < ALUop2}; // TODO: FIX
+            ALUout = {31'b0, ALUop1 < ALUop2};
         4'b0100: // bitwise XOR
             ALUout = ALUop1 ^ ALUop2;
         4'b0101: // logical shift right
@@ -28,7 +34,7 @@ begin
         4'b0110: // bitwise OR
             ALUout = ALUop1 | ALUop2;
         4'b0111: // bitwise AND
-            ALUout = ALUop2 & ALUop2;
+            ALUout = ALUop1 & ALUop2;
         default: // should be unreachable
             ALUout = 32'hDEAD; // error magic number
     endcase
