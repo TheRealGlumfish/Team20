@@ -35,7 +35,7 @@ begin
                 dout = {{16{mem_array[addr+1][7]}}, mem_array[addr+1], mem_array[addr]};
                 wdata_padded = {16'b0, wdata[15:0]};
             end
-        3'b10: // LB
+        3'b010: // LB
             begin
                 dout = {{24{mem_array[addr][7]}}, mem_array[addr]};
                 wdata_padded = {24'b0, wdata[7:0]};
@@ -47,7 +47,7 @@ begin
                 wdata_padded = {16'b0, wdata[15:0]};
             end
 
-        3'b10: // LBU
+        3'b110: // LBU
             begin
                 dout = {24'b0, mem_array[addr]};
                 wdata_padded = {24'b0, wdata[7:0]};
