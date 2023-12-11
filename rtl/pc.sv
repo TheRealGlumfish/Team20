@@ -14,9 +14,8 @@ initial
     // this value is the start of instruction memory
     PC = 'hbfc00000;
 
-logic [31:0] target ;
-
-always_ff @(posedge clk) begin
+always_ff @(posedge clk)
+begin
     if(rst)
         PC <= 'hbfc00000; //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
     else
