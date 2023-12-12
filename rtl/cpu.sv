@@ -13,12 +13,12 @@ logic [31:0] PCF;
 logic [31:0] PCPlus4F;
 logic [31:0] instrF;
 
+
+// TODO checkout pc aluout
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, PCF); // TODO sort out ALUout
+pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, StallF, PCPlus4F); // TODO sort out ALUout
 
-// TODO add StallD and FlushD signals
-fetchff fetchff(clk, instrF, PCF, PCPlus4F, instrD, PCD, PCPlus4D);
-
+fetchff fetchff(clk, instrF, PCF, PCPlus4F, en, StallD, FlushD, PCD, PCPlus4D);
 
 // DECODE STAGE:
 logic [31:0] instrD;
@@ -49,7 +49,7 @@ assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, result, RD1D, RD2D, a0);
 //TODO add FlushE signal
-decodeff decodeff(clk, RegWriteD, ResultSrcD, MemWriteD, JumpD, ALUCtrlD, ALUSrcD,
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, JumpD, ALUCtrlD, ALUSrcD,
                 RegWriteE, ResultSrcE, MemWriteE, JumpE, ALUCtrlE, ALUSrcE,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);

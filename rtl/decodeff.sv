@@ -1,5 +1,6 @@
 module decodeff (
     input logic clk,
+    input logic clear,
     //CONTROL PATH INPUTS (Decode stage)
     input logic RegWriteD,
     input logic [1:0] ResultSrcD,
@@ -39,29 +40,51 @@ module decodeff (
     output logic [31:0] PCPlus4E //Pc +4 
 );
 
-//CONTROL PATH
 always_ff@(posedge clk)
 begin
-    RegWriteE <=RegWriteD;
-    ResultSrcE <= ResultSrcD;
-    MemWriteE <= MemWriteD;
-    JumpE <= JumpD;
-    ALUControlE <= ALUControlD;
-    ALUSrcE <= ALUSrcD;
+    if(clear)
+        begin
+            // CONTROL PATH
+            RegWriteE <= 0;
+            ResultSrcE <= 0;
+            MemWriteE <= 0;
+            JumpE <= 0;
+            ALUControlE <= 0;
+            ALUSrcE <= 0;
+
+            // DATA PATH
+            RD1E <= 0;
+            RD2E <= 0;
+            PCE <= 0;
+            RS1E <= 0;
+            RS1E <= 0;
+            RDE <= 0;
+            ExtImmE <= 0;
+            PCPlus4E <= 0;
+        end
+    else
+        begin
+            // CONTROL PATH
+            RegWriteE <=RegWriteD;
+            ResultSrcE <= ResultSrcD;
+            MemWriteE <= MemWriteD;
+            JumpE <= JumpD;
+            ALUControlE <= ALUControlD;
+            ALUSrcE <= ALUSrcD;
+
+            // DATA PATH
+            RD1E <= RD1D;
+            RD2E <= RD2D;
+            PCE <= PCD;
+            RS1E <= RS1D;
+            RS1E <= RS1D;
+            RDE <= RDD;
+            ExtImmE <= ExtImmD;
+            PCPlus4E <= PCPlus4D;
+        end
+    
 end
 
-//DATA PATH
-always_ff@(posedge clk)
-begin
-    RD1E <= RD1D;
-    RD2E <= RD2D;
-    PCE <= PCD;
-    RS1E <= RS1D;
-    RS1E <= RS1D;
-    RDE <= RDD;
-    ExtImmE <= ExtImmD;
-    PCPlus4E <= PCPlus4D;
-end
 
 
 endmodule
