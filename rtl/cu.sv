@@ -146,12 +146,12 @@ begin
         7'b0110111: // U-Type instructions (lui)
         begin
             PCsrc = 0;
-            ResultSrc = 2'b11;
+            ResultSrc = 2'b00;
             MemWrite = 0;
-            ALUsrc = 0; // Don't care
+            ALUsrc = 1; 
             ImmSrc = 3'b100;
             RegWrite = 1;
-            ALUctrl = 4'b0000; // Don't care
+            ALUctrl = 4'b1000;
             DataWidth = 3'b000;
         end
         7'b1101111: // J-Type instructions (jal)
