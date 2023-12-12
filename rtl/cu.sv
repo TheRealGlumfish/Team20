@@ -55,6 +55,8 @@ begin
                     DataWidth = 3'b110;
                 3'b101: // load half unsigned
                     DataWidth = 3'b101;
+                default:
+                    DataWidth = 3'b000;
            endcase
         end
         7'b0010011: // I-Type instructions (arithmetic)
@@ -95,7 +97,8 @@ begin
                     DataWidth = 3'b001;
                 3'b010: // store word
                     DataWidth = 3'b000;
-            
+                default:
+                    DataWidth = 3'b000;
             endcase
         end
         7'b1100011: // B-Type instructions
@@ -137,6 +140,11 @@ begin
                     PCsrc = Zero;
                     ALUctrl = 4'b0011;
                 end
+		default:
+		begin
+		   PCsrc = 0;
+		   ALUctrl = 4'b0000;
+		end
             endcase
         end
         // 7'b0010111: // U-Type instructions (auipc)
@@ -165,6 +173,17 @@ begin
            RegWrite = 1;
            DataWidth = 3'b000;
         end
+	default:
+	begin
+	   PCsrc = 0;
+	   ResultSrc = 2'b00;
+	   MemWrite = 0;
+	   ALUctrl = 4'b0000;
+	   ALUsrc = 1;
+	   ImmSrc = 3'b000;
+	   RegWrite = 0;
+	   DataWidth = 3'b000;
+	end
     endcase
 end
 
