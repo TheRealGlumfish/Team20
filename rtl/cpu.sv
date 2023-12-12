@@ -21,7 +21,7 @@ logic [31:0] PCPlus4F;
 logic [31:0] instrF;
 
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, JumpD, JALR, ImmOp, ALUout, PCF); // TODO sort out ALUout
+pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, PCF); // TODO sort out ALUout
 
 // TODO add StallD and FlushD signals
 fetchff fetchff(clk, instrF, PCF, PCPlus4F, instrD, PCD, PCPlus4D);
@@ -84,7 +84,9 @@ logic [31:0] SrcBE;
 logic [31:0] ALUResultE;
 logic [31:0] regOp2;
 logic [31:0] PCPlus4E;
+logic [31:0] PCtarget;
 
+assign PCtarget = PCE + ImmExtE;
 
 always_comb
 begin
@@ -153,8 +155,6 @@ begin
         resultW = ReadDataW; 
     2'b10:
         resultW = PCPlus4W;
-    2'b11: // TODO sort this out
-        resultW = ImmOp;
     endcase
 end
 
