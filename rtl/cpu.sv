@@ -144,8 +144,6 @@ begin
         endcase
 end
 
-
-
 executeff executeff(clk, RegWriteE, ResultSrcE, MemWriteE, DataWidthE,
                         RegWriteM, ResultSrcM, MemWriteM, DataWidthM,
                         ALUResultE, regOp2, rdE, PCPlus4E,
@@ -204,11 +202,9 @@ logic MemtoRegE;
 
 assign MemtoRegE = ResultSrcE[0];
 
-// TODO PCSrcE doesnt exist yet
-
 hazard hazard(rs1E, rs2E, rs1D, rs2D, RdM, RdW, RdE, 
             MemtoRegE, WriteRegE, WriteRegM,
-            RegWriteM, RegWriteW, RegWriteE, PCSrcE,
+            RegWriteM, RegWriteW, RegWriteE, PCSrc,
             StallF, StallD, FlushE, FlushD, ForwardAE,
             ForwardBE);
 
