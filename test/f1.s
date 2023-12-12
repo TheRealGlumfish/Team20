@@ -52,11 +52,9 @@ light7:
     addi a0, a0, 0b10000000
 counter:
     addi a1, a1, 1
-    nop
+release:
     bltu a1, t0, counter
     li a0, 0
-
-end:
-    nop
-    j end
-
+    lw t5, 0(t6)
+    bgtz t5, release
+    j init_lfsr
