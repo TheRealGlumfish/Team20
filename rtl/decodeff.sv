@@ -5,7 +5,7 @@ module decodeff (
     input logic RegWriteD,
     input logic [1:0] ResultSrcD,
     input logic MemWriteD,
-    input logic JumpD,
+    input logic BranchD,
     input logic [2:0] DataWidthD,
     //input logic BranchD,
     input logic [2:0] ALUControlD,
@@ -15,7 +15,7 @@ module decodeff (
     output logic RegWriteE,
     output logic [1:0] ResultSrcE,
     output logic MemWriteE,
-    output logic JumpE,
+    output logic BranchE,
     input logic [2:0] DataWidthE,
     //output logic BranchE,
     output logic [2:0] ALUControlE,
@@ -50,7 +50,7 @@ begin
             RegWriteE <= 0;
             ResultSrcE <= 0;
             MemWriteE <= 0;
-            JumpE <= 0;
+            BranchE <= 0;
             ALUControlE <= 0;
             ALUSrcE <= 0;
 
@@ -70,7 +70,7 @@ begin
             RegWriteE <=RegWriteD;
             ResultSrcE <= ResultSrcD;
             MemWriteE <= MemWriteD;
-            JumpE <= JumpD;
+            BranchE <= BranchD;
             ALUControlE <= ALUControlD;
             ALUSrcE <= ALUSrcD;
 

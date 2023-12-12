@@ -15,12 +15,11 @@ logic[2:0] DataWidthD;
 logic [31:0] PCF;
 logic [31:0] PCPlus4F;
 logic [31:0] instrF;
-
+logic PCSrc;
 
 // TODO checkout pc aluout
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, StallF, PCPlus4F);
-
+pc Pc(clk, rst, PCsrc, JALR, PCtarget, ALUout, StallF, PCPlus4F);
 fetchff fetchff(clk, instrF, PCF, PCPlus4F, en, StallD, FlushD, PCD, PCPlus4D);
 
 // DECODE STAGE:
@@ -37,13 +36,13 @@ logic [31:0] RD2D;
 logic RegWriteD;
 logic [1:0] ResultSrcD;
 logic MemWriteD;
-logic JumpD;
+logic BranchD;
 logic [3:0] ALUCtrlD;
 logic ALUSrcD;
 logic [2:0] ImmSrcD;
-logic Zero;
 
-cu Cu(instrD, Zero, JALR, MemWriteD, RegWriteD, JumpD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD);
+
+cu Cu(instrD, JALR, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD);
 se Se(instrD, ImmSrcD, ImmExtD);
 
 assign rs1D = instrD[19:15];
@@ -52,17 +51,16 @@ assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, result, RD1D, RD2D, a0);
 
-decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, JumpD, DataWidthD, ALUCtrlD, ALUSrcD,
-                RegWriteE, ResultSrcE, MemWriteE, JumpE, DataWidthE, ALUCtrlE, ALUSrcE,
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD,
+                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);
-
 
 // EXECUTE STAGE:
 logic RegWriteE;
 logic [1:0] ResultSrcE;
 logic MemWriteE;
-logic JumpE;
+logic BranchE;
 logic [3:0] ALUCtrlE;
 logic ALUSrcE;
 
@@ -81,6 +79,8 @@ logic [31:0] ALUResultE;
 logic [31:0] regOp2;
 logic [31:0] PCPlus4E;
 logic [31:0] PCtarget;
+
+logic ZeroE;
 
 assign PCtarget = PCE + ImmExtE;
 
@@ -107,7 +107,44 @@ end
 
 assign SrcBE = ALUSrcE ? ImmExtE : regOp2;
 
-alu ALU(SrcAE, SrcBE, ALUCtrlE, ALUResultE, Zero);
+alu ALU(SrcAE, SrcBE, ALUCtrlE, ALUResultE, ZeroE);
+
+
+//BRANCH LOGIC:
+always_comb
+begin
+    if(BranchE == 0)
+        PCSrc = 0;
+    else
+        case(ALUCtrlE)
+            4'b1001: // beq
+            begin
+                PCsrc = Zero;
+            end
+            4'b1001: // bne
+            begin
+                PCsrc = !Zero;
+            end
+            4'b0011: // blt
+            begin
+                PCsrc = !Zero;
+            end
+            4'b0010: // bge
+            begin
+                PCsrc = Zero;
+            end
+            4'b0011: // bltu
+            begin
+                PCsrc = !Zero;
+            end
+            4'b0011: // bgeu
+            begin
+                PCsrc = Zero;
+            end
+        endcase
+end
+
+
 
 executeff executeff(clk, RegWriteE, ResultSrcE, MemWriteE, DataWidthE,
                         RegWriteM, ResultSrcM, MemWriteM, DataWidthM,
