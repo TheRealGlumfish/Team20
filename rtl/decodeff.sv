@@ -46,7 +46,6 @@ begin
     ResultSrcE <= ResultSrcD;
     MemWriteE <= MemWriteD;
     JumpE <= JumpD;
-    BranchE <= BranchD;
     ALUControlE <= ALUControlD;
     ALUSrcE <= ALUSrcD;
 end
