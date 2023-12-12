@@ -8,13 +8,6 @@ module cpu(
 logic JALR;
 logic[2:0] DataWidth;
 
-//HAZARD
-logic [1:0] ForwardAE;
-logic [1:0] ForwardBE;
-
-
-
-
 // FETCH STAGE: //TODO make this good i beg
 logic [31:0] PCF;
 logic [31:0] PCPlus4F;
@@ -157,5 +150,26 @@ begin
         resultW = PCPlus4W;
     endcase
 end
+
+// HAZARD UNIT:
+logic [1:0] ForwardAE;
+logic [1:0] ForwardBE;
+
+logic StallF;
+logic StallD;
+logic FlushD;
+logic FlushE;
+
+logic MemtoRegE;
+
+assign MemtoRegE = ResultSrcE[0];
+
+// TODO PCSrcE doesnt exist yet
+
+hazard hazard(rs1E, rs2E, rs1D, rs2D, RdM, RdW, RdE, 
+            MemtoRegE, WriteRegE, WriteRegM,
+            RegWriteM, RegWriteW, RegWriteE, PCSrcE,
+            StallF, StallD, FlushE, FlushD, ForwardAE,
+            ForwardBE);
 
 endmodule

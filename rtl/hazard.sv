@@ -6,7 +6,6 @@ module hazard(
     input logic [4:0] RdM,
     input logic [4:0] RdW,
     input logic [4:0] RdE,
-    input logic MemtoRegM,
     input logic MemtoRegE,
     input logic WriteRegE,
     input logic WriteRegM,
