@@ -6,9 +6,12 @@ module cpu(
 );
 
 logic JALR;
-logic[2:0] DataWidth;
 
-// FETCH STAGE: //TODO make this good i beg
+logic[2:0] DataWidthM;
+logic[2:0] DataWidthE;
+logic[2:0] DataWidthD;
+
+// FETCH STAGE: 
 logic [31:0] PCF;
 logic [31:0] PCPlus4F;
 logic [31:0] instrF;
@@ -16,7 +19,7 @@ logic [31:0] instrF;
 
 // TODO checkout pc aluout
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, StallF, PCPlus4F); // TODO sort out ALUout
+pc Pc(clk, rst, JumpD, JALR, PCtarget, ALUout, StallF, PCPlus4F);
 
 fetchff fetchff(clk, instrF, PCF, PCPlus4F, en, StallD, FlushD, PCD, PCPlus4D);
 
@@ -40,7 +43,7 @@ logic ALUSrcD;
 logic [2:0] ImmSrcD;
 logic Zero;
 
-cu Cu(instrD, Zero, JALR, MemWriteD, RegWriteD, JumpD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidth);
+cu Cu(instrD, Zero, JALR, MemWriteD, RegWriteD, JumpD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD);
 se Se(instrD, ImmSrcD, ImmExtD);
 
 assign rs1D = instrD[19:15];
@@ -48,9 +51,9 @@ assign rs2D = instrD[24:20];
 assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, result, RD1D, RD2D, a0);
-//TODO add FlushE signal
-decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, JumpD, ALUCtrlD, ALUSrcD,
-                RegWriteE, ResultSrcE, MemWriteE, JumpE, ALUCtrlE, ALUSrcE,
+
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, JumpD, DataWidthD, ALUCtrlD, ALUSrcD,
+                RegWriteE, ResultSrcE, MemWriteE, JumpE, DataWidthE, ALUCtrlE, ALUSrcE,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);
 
@@ -106,8 +109,8 @@ assign SrcBE = ALUSrcE ? ImmExtE : regOp2;
 
 alu ALU(SrcAE, SrcBE, ALUCtrlE, ALUResultE, Zero);
 
-executeff executeff(clk, RegWriteE, ResultSrcE, MemWriteE,
-                        RegWriteM, ResultSrcM, MemWriteM, 
+executeff executeff(clk, RegWriteE, ResultSrcE, MemWriteE, DataWidthE,
+                        RegWriteM, ResultSrcM, MemWriteM, DataWidthM,
                         ALUResultE, regOp2, rdE, PCPlus4E,
                         ALUResultM, WriteDataM, rdM, PCPlus4M);
 
@@ -123,7 +126,7 @@ logic [31:0] PCPlus4M;
 
 logic [31:0] ReadDataM;
 
-datamem datamem(clk, ALUResultM, WriteDataM, MemWriteM, DataWidth, ioin, ReadDataM);
+datamem datamem(clk, ALUResultM, WriteDataM, MemWriteM, DataWidthM, ioin, ReadDataM);
 
 memoryff memoryff(clk, RegWriteM, ResultSrcM,
                         RegWriteW, ResultSrcW,

@@ -4,11 +4,13 @@ module executeff (
     input logic RegWriteE,
     input logic [1:0] ResultSrcE,
     input logic MemWriteE,
+    input logic[2:0] DataWidthE,
 
     //CONTROL PATH OUTPUTS (Memory stage)
     output logic RegWriteM,
     output logic [1:0] ResultSrcM,
     output logic MemWriteM,
+    input logic[2:0] DataWidthM,
 
     //DATA PATH INPUTS (Execute stage)
     input logic [31:0] ALUOutE, //Value of out ALU in execute stage
