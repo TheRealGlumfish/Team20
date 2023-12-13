@@ -12,7 +12,7 @@ module fetchff (
 
 always_ff@(posedge clk)
 begin
-    if(en) 
+    if(!en) 
         begin
             instrD <= instrF;
             PCD <= PCF;

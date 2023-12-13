@@ -21,7 +21,7 @@ assign PCplus4 = PC + 4;
 always_ff @(posedge clk) begin
     if(rst)
         PC <= 'hbfc00000; //mux selecting immop if PC_CTRL=1 or adds current PC by 4 if not
-    else if (en)
+    else if (!en)
         begin
             if(JALR)
                 PC <= aluout;

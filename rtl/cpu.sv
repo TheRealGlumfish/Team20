@@ -7,8 +7,6 @@ module cpu(
 
 logic JALR;
 
-
-
 logic[2:0] DataWidthM;
 logic[2:0] DataWidthE;
 logic[2:0] DataWidthD;
