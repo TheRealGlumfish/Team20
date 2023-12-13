@@ -16,8 +16,6 @@ initial
     // this value is the start of instruction memory
     PC = 'hbfc00000;
 
-logic [31:0] target ;
-
 assign PCplus4 = PC + 4;
 
 always_ff @(posedge clk) begin

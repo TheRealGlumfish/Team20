@@ -11,7 +11,7 @@ begin
     case(ALUctrl)
         4'b0000: // add  
             ALUout = ALUop1 + ALUop2;
-        4'b1001: // subtract
+        4'b1000: // subtract
             ALUout = ALUop1 - ALUop2;
         4'b0001: // logical shift left
             ALUout = ALUop1 << ALUop2[4:0];

@@ -24,7 +24,7 @@ always_comb
 begin
     case(op)
         7'b0110011: // R-Type instructions
-        begin // TODO: Check/fix unsigned variants
+        begin
             Branch = 0;
             ResultSrc = 2'b00; // read from ALU
             MemWrite = 0;
@@ -35,7 +35,7 @@ begin
             DataWidth = 3'b000;
         end
         7'b0000011: // I-Type instructions (load)
-        begin // TODO: Check/fix unsigned variants
+        begin
            Branch = 0;
            ResultSrc = 2'b01; // read from datamem
            MemWrite = 0;
@@ -54,6 +54,8 @@ begin
                     DataWidth = 3'b110;
                 3'b101: // load half unsigned
                     DataWidth = 3'b101;
+                default:
+                    DataWidth = 3'b000;
            endcase
         end
         7'b0010011: // I-Type instructions (arithmetic)
@@ -64,7 +66,7 @@ begin
             ALUsrc = 1;
             ImmSrc = 3'b000;
             RegWrite = 1;
-            ALUctrl = {1'b0, funct3}; 
+            ALUctrl = (funct3 == 3'b101) ? {funct7[5], funct3} : {1'b0, funct3}; 
             DataWidth = 3'b000;
         end
         7'b1100111: // I-Type instructions (jalr)
@@ -75,7 +77,7 @@ begin
             ALUsrc = 1;
             ImmSrc = 3'b000;
             RegWrite = 1;
-            ALUctrl = 4'b1001;
+            ALUctrl = 4'b0000;
             DataWidth = 3'b000;
         end
         7'b0100011: // S-Type instructions
@@ -94,7 +96,8 @@ begin
                     DataWidth = 3'b001;
                 3'b010: // store word
                     DataWidth = 3'b000;
-            
+                default:
+                    DataWidth = 3'b000;
             endcase
         end
         7'b1100011: // B-Type instructions
@@ -109,11 +112,11 @@ begin
             case(funct3)
                 3'b000: // beq
                 begin
-                    ALUctrl = 4'b1001;
+                    ALUctrl = 4'b1000;
                 end
                 3'b001: // bne
                 begin
-                    ALUctrl = 4'b1001;
+                    ALUctrl = 4'b1000;
                 end
                 3'b100: // blt
                 begin
@@ -131,6 +134,10 @@ begin
                 begin
                     ALUctrl = 4'b0011;
                 end
+		default:
+		begin
+		    ALUctrl = 4'b0000;
+		end
             endcase
         end
         // 7'b0010111: // U-Type instructions (auipc)
@@ -153,12 +160,23 @@ begin
            Branch = 1;
            ResultSrc = 2'b10;
            MemWrite = 0;
-           ALUctrl = 4'b1001;
+           ALUctrl = 4'b0000; // possibly don't care?
            ALUsrc = 1;
-           ImmSrc = 3'b011;
+           ImmSrc = 3'b011; // check possibly disable?
            RegWrite = 1;
            DataWidth = 3'b000;
         end
+	default:
+	begin
+        Branch = 0
+	    ResultSrc = 2'b00;
+	    MemWrite = 0;
+	    ALUctrl = 4'b0000;
+	    ALUsrc = 1;
+	    ImmSrc = 3'b000;
+	    RegWrite = 0;
+	    DataWidth = 3'b000;
+	end
     endcase
 end
 
