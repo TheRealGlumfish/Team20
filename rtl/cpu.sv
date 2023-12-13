@@ -5,7 +5,7 @@ module cpu(
     output logic [31:0] a0
 );
 
-logic JALR;
+
 
 logic[2:0] DataWidthM;
 logic[2:0] DataWidthE;
@@ -19,7 +19,7 @@ logic PCSrc;
 
 // TODO checkout pc aluout
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, PCSrc, JALR, PCtarget, ALUout, StallF, PCF, PCPlus4F);
+pc Pc(clk, rst, PCSrc, JALRE, PCtarget, ALUResultE, StallF, PCF, PCPlus4F);
 fetchff fetchff(clk, instrF, PCF, PCPlus4F, StallD, FlushD, instrD, PCD, PCPlus4D);
 
 // DECODE STAGE:
@@ -41,8 +41,9 @@ logic [3:0] ALUCtrlD;
 logic ALUSrcD;
 logic [2:0] ImmSrcD;
 logic [2:0] Funct3D;
+logic JALRD;
 
-cu Cu(instrD, JALR, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD, Funct3D);
+cu Cu(instrD, JALRD, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD, Funct3D);
 se Se(instrD, ImmSrcD, ImmExtD);
 
 assign rs1D = instrD[19:15];
@@ -51,8 +52,8 @@ assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdW, RegWriteW, resultW, RD1D, RD2D, a0);
 
-decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D,
-                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E,
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D, JALRD,
+                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E, JALRE,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);
 
@@ -73,6 +74,8 @@ logic [4:0] rs2E;
 logic [4:0] rdE;
 logic [31:0] ImmExtE;
 
+logic JALRE;
+
 logic [31:0] SrcAE;
 logic [31:0] SrcBE;
 
@@ -81,7 +84,6 @@ logic [31:0] regOp2;
 logic [31:0] PCPlus4E;
 logic [31:0] PCtarget;
 
-logic[31:0] ALUout;
 
 logic ZeroE;
 
@@ -206,7 +208,7 @@ logic MemtoRegE;
 assign MemtoRegE = ResultSrcE[0];
 
 hazard hazard(rs1E, rs2E, rs1D, rs2D, rdM, rdW, rdE, 
-            MemtoRegE, RegWriteM, RegWriteW, PCSrc,
+            MemtoRegE, RegWriteM, RegWriteW, PCSrc, JALRE,
             StallF, StallD, FlushE, FlushD, ForwardAE,
             ForwardBE);
 
