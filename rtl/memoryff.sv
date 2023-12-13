@@ -25,7 +25,7 @@ module memoryff (
 //CONTROL PATH
 always_ff@(posedge clk)
 begin
-    RegWriteW <=RegWriteM;
+    RegWriteW <= RegWriteM;
     ResultSrcW <= ResultSrcM;
 end
 

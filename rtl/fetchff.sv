@@ -12,17 +12,18 @@ module fetchff (
 
 always_ff@(posedge clk)
 begin
-    if(!en) 
-        begin
-            instrD <= instrF;
-            PCD <= PCF;
-            PCPlus4D <= PCPlus4F;
-        end
-    else if (clear)
+
+    if(clear)
         begin
             instrD <= 0;
             PCD <= 0;
             PCPlus4D <= 0;
+        end
+    else if (!en)
+        begin
+            instrD <= instrF;
+            PCD <= PCF;
+            PCPlus4D <= PCPlus4F;
         end
 end
 endmodule

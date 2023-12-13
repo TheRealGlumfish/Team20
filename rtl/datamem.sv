@@ -74,6 +74,14 @@ begin
                 mem_array[addr+2] <= wdata[23:16];
                 mem_array[addr+3] <= wdata[31:24];
             end
+            default:
+            begin
+                mem_array[addr] <= wdata[7:0];
+                mem_array[addr+1] <= wdata[15:8];
+                mem_array[addr+2] <= wdata[23:16];
+                mem_array[addr+3] <= wdata[31:24];
+            end
+
         endcase
     end
 end

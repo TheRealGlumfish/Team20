@@ -98,6 +98,8 @@ begin
             SrcAE = resultW;
         2'b10:
             SrcAE = ALUResultM;
+        default:
+            SrcAE = RD1E;
     endcase
     
     case(ForwardBE)
@@ -107,6 +109,8 @@ begin
             regOp2 = resultW;
         2'b10:
             regOp2 = ALUResultM;
+        default:
+            regOp2 = RD2E;
     endcase
 end
 
@@ -146,6 +150,7 @@ begin
             begin
                 PCSrc = ZeroE;
             end
+            
         endcase
 end
 
@@ -191,6 +196,8 @@ begin
         resultW = ReadDataW; 
     2'b10:
         resultW = PCPlus4W;
+    default:
+        resultW = ALUResultW;
     endcase
 end
 

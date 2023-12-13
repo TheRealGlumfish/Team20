@@ -13,8 +13,9 @@ module hazard(
     input logic RegWriteW,
     input logic PCSrcE,
     input logic JALRE,
-
-
+    // Dimitris you can't run
+    // If you don't hand yourself in by 6pm tomorrow evening
+    // I will release the documents
     output logic StallF,
     output logic StallD,
     output logic FlushE,
