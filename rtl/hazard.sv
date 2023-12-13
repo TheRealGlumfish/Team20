@@ -27,18 +27,18 @@ logic lwStall;
 
 always_comb
 begin
-    // assign Forward AE
-    if (RegWriteW & Rs1E != 0 & RdW == Rs1E)
+    // assign ForwardAE
+    if(((Rs1E==RdM) & RegWriteM) & (Rs1E!=0))
         ForwardAE = 2'b10;
-    else if(RegWriteM & Rs1E != 0 & RdM == Rs1E)
+    else if(((Rs1E==RdW) & RegWriteW) & (Rs1E!=0))
         ForwardAE = 2'b01;
     else
         ForwardAE = 2'b00;
 
     // assign ForwardBE
-    if(RegWriteW & Rs2E != 0 & RdW == Rs2E)
+    if(((Rs2E==RdM) & RegWriteM) & (Rs2E!=0))
         ForwardBE = 2'b10;
-    else if (RegWriteM & Rs2E != 0 & RdM == Rs2E)
+    else if(((Rs2E==RdW) & RegWriteW) & (Rs2E!=0))
         ForwardBE = 2'b01;
     else
         ForwardBE = 2'b00;

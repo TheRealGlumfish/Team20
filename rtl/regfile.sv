@@ -12,7 +12,7 @@ module regfile(
 
 logic [31:0] registers[31];
 
-always_ff@(posedge clk)
+always_ff@(negedge clk)
     if (WE3 && AD3 != 0)
         registers[AD3 - 1] <= WD3;
 

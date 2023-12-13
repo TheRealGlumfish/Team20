@@ -49,7 +49,7 @@ assign rs1D = instrD[19:15];
 assign rs2D = instrD[24:20];
 assign rdD = instrD[11:7];
 
-regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, resultW, RD1D, RD2D, a0);
+regfile RegFile(clk, rs1D, rs2D, rdW, RegWriteW, resultW, RD1D, RD2D, a0);
 
 decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D,
                 RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E,
