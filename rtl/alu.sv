@@ -35,7 +35,7 @@ begin
             ALUout = ALUop1 | ALUop2;
         4'b0111: // bitwise AND
             ALUout = ALUop1 & ALUop2;
-        4'b1000: // LUI instruction
+        4'b1001: // LUI instruction
             ALUout = ALUop2;
         default: // should be unreachable
             ALUout = 32'hDEAD; // error magic number

@@ -152,7 +152,7 @@ begin
             ALUsrc = 1; 
             ImmSrc = 3'b100;
             RegWrite = 1;
-            ALUctrl = 4'b1000;
+            ALUctrl = 4'b1001;
             DataWidth = 3'b000;
         end
         7'b1101111: // J-Type instructions (jal)
