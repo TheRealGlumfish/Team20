@@ -7,6 +7,8 @@ module cpu(
 
 logic JALR;
 
+
+
 logic[2:0] DataWidthM;
 logic[2:0] DataWidthE;
 logic[2:0] DataWidthD;
@@ -19,8 +21,8 @@ logic PCSrc;
 
 // TODO checkout pc aluout
 instrmem instrmem(PCF, instrF);
-pc Pc(clk, rst, PCsrc, JALR, PCtarget, ALUout, StallF, PCPlus4F);
-fetchff fetchff(clk, instrF, PCF, PCPlus4F, en, StallD, FlushD, PCD, PCPlus4D);
+pc Pc(clk, rst, PCSrc, JALR, PCtarget, ALUout, StallF, PCF, PCPlus4F);
+fetchff fetchff(clk, instrF, PCF, PCPlus4F, StallD, FlushD, instrD, PCD, PCPlus4D);
 
 // DECODE STAGE:
 logic [31:0] instrD;
@@ -49,7 +51,7 @@ assign rs1D = instrD[19:15];
 assign rs2D = instrD[24:20];
 assign rdD = instrD[11:7];
 
-regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, result, RD1D, RD2D, a0);
+regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, resultW, RD1D, RD2D, a0);
 
 decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD,
                 RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE,
@@ -80,6 +82,8 @@ logic [31:0] regOp2;
 logic [31:0] PCPlus4E;
 logic [31:0] PCtarget;
 
+logic[31:0] ALUout;
+
 logic ZeroE;
 
 assign PCtarget = PCE + ImmExtE;
@@ -90,7 +94,7 @@ begin
         2'b00:
             SrcAE = RD1E;
         2'b01:
-            SrcAE = result;
+            SrcAE = resultW;
         2'b10:
             SrcAE = ALUResultM;
     endcase
@@ -99,7 +103,7 @@ begin
         2'b00:
             regOp2 = RD2E;
         2'b01:
-            regOp2 = result;
+            regOp2 = resultW;
         2'b10:
             regOp2 = ALUResultM;
     endcase
@@ -119,27 +123,27 @@ begin
         case(ALUCtrlE)
             4'b1001: // beq
             begin
-                PCsrc = Zero;
+                PCSrc = ZeroE;
             end
             4'b1001: // bne
             begin
-                PCsrc = !Zero;
+                PCSrc = !ZeroE;
             end
             4'b0011: // blt
             begin
-                PCsrc = !Zero;
+                PCSrc = !ZeroE;
             end
             4'b0010: // bge
             begin
-                PCsrc = Zero;
+                PCSrc = ZeroE;
             end
             4'b0011: // bltu
             begin
-                PCsrc = !Zero;
+                PCSrc = !ZeroE;
             end
             4'b0011: // bgeu
             begin
-                PCsrc = Zero;
+                PCSrc = ZeroE;
             end
         endcase
 end
