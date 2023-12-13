@@ -12,6 +12,7 @@ module hazard(
     input logic RegWriteM,
     input logic RegWriteW,
     input logic PCSrcE,
+    input logic JALRE,
 
 
     output logic StallF,
@@ -49,7 +50,7 @@ begin
     StallD = lwStall;
 
     // assign flush signals
-    FlushD = PCSrcE;
+    FlushD = (PCSrcE | JALRE);
     FlushE = (lwStall | PCSrcE);
 end
 
