@@ -8,12 +8,12 @@ module cu(
     output logic [1:0]  ResultSrc,
     output logic [2:0] ImmSrc,
     output logic [3:0] ALUctrl,
-    output logic [2:0] DataWidth
+    output logic [2:0] DataWidth,
+    output logic [2:0] funct3
 );
 
 logic [6:0] op;
 logic [6:0] funct7;
-logic [2:0] funct3;
 
 assign op = instr[6:0];
 assign funct7 = instr[31:25];

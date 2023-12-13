@@ -40,9 +40,9 @@ logic BranchD;
 logic [3:0] ALUCtrlD;
 logic ALUSrcD;
 logic [2:0] ImmSrcD;
+logic [2:0] Funct3D;
 
-
-cu Cu(instrD, JALR, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD);
+cu Cu(instrD, JALR, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD, Funct3D);
 se Se(instrD, ImmSrcD, ImmExtD);
 
 assign rs1D = instrD[19:15];
@@ -51,8 +51,8 @@ assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdD, RegWriteW, resultW, RD1D, RD2D, a0);
 
-decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD,
-                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE,
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D,
+                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);
 
@@ -63,6 +63,7 @@ logic MemWriteE;
 logic BranchE;
 logic [3:0] ALUCtrlE;
 logic ALUSrcE;
+logic [2:0] Funct3E;
 
 logic [31:0] RD1E;
 logic [31:0] RD2E;
@@ -118,28 +119,28 @@ begin
     if(BranchE == 0)
         PCSrc = 0;
     else
-        case(ALUCtrlE)
-            4'b1001: // beq
+        case(Funct3E)
+            3'b000: // beq
             begin
                 PCSrc = ZeroE;
             end
-            4'b1001: // bne
+            3'b001: // bne
             begin
                 PCSrc = !ZeroE;
             end
-            4'b0011: // blt
+            3'b100: // blt
             begin
                 PCSrc = !ZeroE;
             end
-            4'b0010: // bge
+            3'b101: // bge
             begin
                 PCSrc = ZeroE;
             end
-            4'b0011: // bltu
+            3'b110: // bltu
             begin
                 PCSrc = !ZeroE;
             end
-            4'b0011: // bgeu
+            3'b111: // bgeu
             begin
                 PCSrc = ZeroE;
             end

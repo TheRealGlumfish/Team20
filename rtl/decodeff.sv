@@ -10,6 +10,7 @@ module decodeff (
     //input logic BranchD,
     input logic [3:0] ALUControlD,
     input logic ALUSrcD,
+    input logic [2:0] Funct3D,
 
     //CONTROL PATH OUTPUTS (Execute stage)
     output logic RegWriteE,
@@ -20,6 +21,7 @@ module decodeff (
     //output logic BranchE,
     output logic [3:0] ALUControlE,
     output logic ALUSrcE,
+    output logic [2:0] Funct3E,
 
     //DATA PATH INPUTS (Decode stage)
     input logic [31:0] RD1D, //Data out of Reg port 1 in decode stage
@@ -54,6 +56,7 @@ begin
             ALUControlE <= 0;
             ALUSrcE <= 0;
             DataWidthE <= 0;
+            Funct3E <= 0;
 
             // DATA PATH
             RD1E <= 0;
@@ -75,6 +78,7 @@ begin
             ALUControlE <= ALUControlD;
             ALUSrcE <= ALUSrcD;
             DataWidthE <= DataWidthD;
+            Funct3E <= Funct3D;
 
             // DATA PATH
             RD1E <= RD1D;
