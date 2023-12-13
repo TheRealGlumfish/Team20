@@ -168,7 +168,7 @@ begin
         end
 	default:
 	begin
-        Branch = 0
+        Branch = 0;
 	    ResultSrc = 2'b00;
 	    MemWrite = 0;
 	    ALUctrl = 4'b0000;
