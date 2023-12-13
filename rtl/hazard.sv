@@ -6,13 +6,14 @@ module hazard(
     input logic [4:0] RdM,
     input logic [4:0] RdW,
     input logic [4:0] RdE,
-    input logic MemtoRegE,
-    input logic WriteRegE,
-    input logic WriteRegM,
+
+    input logic MemtoRegE, // first bit of resultSrcE
+
     input logic RegWriteM,
     input logic RegWriteW,
-    input logic RegwriteE,
     input logic PCSrcE,
+
+
     output logic StallF,
     output logic StallD,
     output logic FlushE,

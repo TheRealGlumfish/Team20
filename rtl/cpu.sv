@@ -202,9 +202,8 @@ logic MemtoRegE;
 
 assign MemtoRegE = ResultSrcE[0];
 
-hazard hazard(rs1E, rs2E, rs1D, rs2D, RdM, RdW, RdE, 
-            MemtoRegE, WriteRegE, WriteRegM,
-            RegWriteM, RegWriteW, RegWriteE, PCSrc,
+hazard hazard(rs1E, rs2E, rs1D, rs2D, rdM, rdW, rdE, 
+            MemtoRegE, RegWriteM, RegWriteW, PCSrc,
             StallF, StallD, FlushE, FlushD, ForwardAE,
             ForwardBE);
 
