@@ -11,14 +11,14 @@ module memoryff (
     //DATA PATH INPUTS (Memory stage)
     input logic [31:0] ALUOutM, //Value of out ALU in Memory stage
     input logic [31:0] ReadDataM,// Memory Stage - The read data memory value
-    input logic [5:0] RDM, //destination reg of Memory stage
+    input logic [4:0] RDM, //destination reg of Memory stage
     input logic [31:0] PCPlus4M,
     
 
     //DATA PATH OUTPUTS (Writeback stage)
     output logic [31:0] ALUOutW, //Value of out ALU in writeback stage
     output logic [31:0] ReadDataW,// Writeback pipleline stage ,  address where we write into data memory
-    output logic [5:0] RDW, //destination reg of Writeback stage
+    output logic [4:0] RDW, //destination reg of Writeback stage
     output logic [31:0] PCPlus4W //Pc +4 
 );
 

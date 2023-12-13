@@ -15,14 +15,14 @@ module executeff (
     //DATA PATH INPUTS (Execute stage)
     input logic [31:0] ALUOutE, //Value of out ALU in execute stage
     input logic [31:0] WriteDataE,// Execute stage address where we write into data memory
-    input logic [5:0] RDE, //destination reg of execute stage
+    input logic [4:0] RDE, //destination reg of execute stage
     input logic [31:0] PCPlus4E,
     
 
     //DATA PATH OUTPUTS (Memory stage)
     output logic [31:0] ALUOutM, //Value of out ALU in memory stage
     output logic [31:0] WriteDataM,// Memory pipleline stage ,  address where we write into data memory
-    output logic [5:0] RDM, //destination reg of memory stage
+    output logic [4:0] RDM, //destination reg of memory stage
     output logic [31:0] PCPlus4M //Pc +4 
 );
 

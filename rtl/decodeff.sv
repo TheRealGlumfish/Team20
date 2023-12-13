@@ -27,7 +27,7 @@ module decodeff (
     input logic [31:0] PCD, //PC of the decode stage 
     input logic [4:0] RS1D, //source reg 1 of decode stage
     input logic [4:0] RS2D,//source reg 2 of decode stage
-    input logic [3:0] RDD, //destination reg of decode stage
+    input logic [4:0] RDD, //destination reg of decode stage
     input logic [31:0] ExtImmD,
     input logic [31:0] PCPlus4D,
     
@@ -37,7 +37,7 @@ module decodeff (
     output logic [31:0] PCE, //PC of execute stage
     output logic [4:0] RS1E, //Data out of reg port 1 in execute stage
     output logic [4:0] RS2E, //Data out of reg port 1 in execute stage
-    output logic [3:0] RDE, //destination reg of decode stage
+    output logic [4:0] RDE, //destination reg of decode stage
     output logic [31:0] ExtImmE,//Sign extended imm of the execute stage
     output logic [31:0] PCPlus4E //Pc +4 
 );
