@@ -47,25 +47,25 @@ ___
 
 **Note:** o = Main Contributor; v = Co-Author
 
-Task              | Files                                           | Adam  | Archisha  | Dimitris  | Toby |
-:----------------:|:--- ---------------------------------------------
+Task              | Files                                                                                  | Adam  | Archisha  | Dimitris  | Toby |
+:----------------:|:--- ----------------------------------------------------------------------------------------------------------------
 Single Cycle      | 
-Repo Setup        | SystemVerilog modules and testbench source code |       |           |           |      |
-Entry Script      | Documentation                                   |       |           |           |      |
-F1 Program        | Documentation                                   |       |           |           |      |
-Program Counter   | Documentation                                   |       |           |           |      |
-Instruction Memory| Documentation                                   |       |           |           |      |
-Control Unit      | [cu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/cu.sv)                                                                 |   o   |     o     |     o     |      |
-ALU               | [alu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/alu.sv)                                                                 |       |           |     o     |      |
-Sign Extend       | [se.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/se.sv)                                                                 |       |     o     |           |      |
-Data Memory       | Documentation                                   |       |           |           |      |
-Data Memory       | Documentation                                   |       |           |           |      |
-Top Level         | Documentation                                   |       |           |           |   o  |
+Repo Setup        | SystemVerilog modules and testbench source code                                        |       |           |           |      |
+Entry Script      | Documentation                                                                          |       |           |           |      |
+F1 Program        | Documentation                                                                          |       |           |           |      |
+Program Counter   | Documentation                                                                          |       |           |           |      |
+Instruction Memory| Documentation                                                                          |       |           |           |      |
+Control Unit      | [cu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/cu.sv)               |   o   |     o     |     o     |      |
+ALU               | [alu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/alu.sv)             |       |           |     o     |      |
+Sign Extend       | [se.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/se.sv)               |       |     o     |           |      |
+Data Memory       | Documentation                                                                          |       |           |           |      |
+Data Memory       | Documentation                                                                          |       |           |           |      |
+Top Level         | Documentation                                                                          |       |           |           |   o  |
 Pipeline          | 
-Pipeline Registers| Documentation                                   |   o   |           |           |      |
-Hazard Unit       | [hazard.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/hazard.sv)                                                                 |       |     o     |           |      |
-Pipeline Programs | Documentation                                   |       |           |           |      |
-Top Level         | Documentation                                   |       |           |           |   o  |
+Pipeline Registers| Documentation                                                                          |   o   |           |           |      |
+Hazard Unit       | [hazard.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/hazard.sv)     |       |     o     |           |      |
+Pipeline Programs | Documentation                                                                          |       |           |           |      |
+Top Level         | Documentation                                                                          |       |           |           |   o  |
 Cache             | 
 
 ___
