@@ -62,8 +62,8 @@ Data Memory       | [datamem.sv](https://github.com/TheRealGlumfish/Team20/blob/
 Top Level         | [cpu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/cpu.sv)             |       |           |           |   o  |
 Debugging         |                                                                                        |   v   |     v     |           |   v  |
 Pipeline          | 
-Pipeline Registers| [fetchff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/fetchff.sv)     |   o   |           |           |      |                                           | [decodeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/fetchff.sv)    |       |           |           |      |
-                  | [executeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/fetchff.sv)   |       |           |           |      |
+Pipeline Registers| [fetchff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/fetchff.sv)     |   o   |           |           |      |                                           | [decodeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/decodeff.sv)   |       |           |           |      |
+                  | [executeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/executeff.sv) |       |           |           |      |
                   | [memoryff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/memoryff.sv)   |       |           |           |      |
 Hazard Unit       | [hazard.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/hazard.sv)     |       |     o     |           |   v  |
 Pipeline Programs |                                                                                        |       |           |           |   o  |
