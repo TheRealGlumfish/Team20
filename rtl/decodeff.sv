@@ -12,6 +12,7 @@ module decodeff (
     input logic ALUSrcD,
     input logic [2:0] Funct3D,
     input logic JALRD,
+    input logic JALD,
 
     //CONTROL PATH OUTPUTS (Execute stage)
     output logic RegWriteE,
@@ -24,6 +25,7 @@ module decodeff (
     output logic ALUSrcE,
     output logic [2:0] Funct3E,
     output logic JALRE,
+    output logic JALE,
 
     //DATA PATH INPUTS (Decode stage)
     input logic [31:0] RD1D, //Data out of Reg port 1 in decode stage
@@ -60,6 +62,7 @@ begin
             DataWidthE <= 0;
             Funct3E <= 0;
             JALRE <= 0;
+            JALE <= 0;
 
             // DATA PATH
             RD1E <= 0;
@@ -83,6 +86,7 @@ begin
             DataWidthE <= DataWidthD;
             Funct3E <= Funct3D;
             JALRE <= JALRD;
+            JALE <= JALD;
 
             // DATA PATH
             RD1E <= RD1D;

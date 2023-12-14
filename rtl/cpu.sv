@@ -42,8 +42,9 @@ logic ALUSrcD;
 logic [2:0] ImmSrcD;
 logic [2:0] Funct3D;
 logic JALRD;
+logic JALD;
 
-cu Cu(instrD, JALRD, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD, Funct3D);
+cu Cu(instrD, JALRD, JALD, MemWriteD, RegWriteD, BranchD, ALUSrcD, ResultSrcD, ImmSrcD, ALUCtrlD, DataWidthD, Funct3D);
 se Se(instrD, ImmSrcD, ImmExtD);
 
 assign rs1D = instrD[19:15];
@@ -52,8 +53,8 @@ assign rdD = instrD[11:7];
 
 regfile RegFile(clk, rs1D, rs2D, rdW, RegWriteW, resultW, RD1D, RD2D, a0);
 
-decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D, JALRD,
-                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E, JALRE,
+decodeff decodeff(clk, FlushE, RegWriteD, ResultSrcD, MemWriteD, BranchD, DataWidthD, ALUCtrlD, ALUSrcD, Funct3D, JALRD, JALD,
+                RegWriteE, ResultSrcE, MemWriteE, BranchE, DataWidthE, ALUCtrlE, ALUSrcE, Funct3E, JALRE, JALE,
                 RD1D, RD2D, PCD, rs1D, rs2D, rdD, ImmExtD, PCPlus4D,
                 RD1E, RD2E, PCE, rs1E, rs2E, rdE, ImmExtE, PCPlus4E);
 
@@ -75,6 +76,7 @@ logic [4:0] rdE;
 logic [31:0] ImmExtE;
 
 logic JALRE;
+logic JALE;
 
 logic [31:0] SrcAE;
 logic [31:0] SrcBE;
@@ -125,33 +127,36 @@ begin
     if(BranchE == 0)
         PCSrc = 0;
     else
-        case(Funct3E)
-            3'b000: // beq
-            begin
-                PCSrc = ZeroE;
-            end
-            3'b001: // bne
-            begin
-                PCSrc = !ZeroE;
-            end
-            3'b100: // blt
-            begin
-                PCSrc = !ZeroE;
-            end
-            3'b101: // bge
-            begin
-                PCSrc = ZeroE;
-            end
-            3'b110: // bltu
-            begin
-                PCSrc = !ZeroE;
-            end
-            3'b111: // bgeu
-            begin
-                PCSrc = ZeroE;
-            end
-            
-        endcase
+        if(JALE)
+            PCSrc = 1;
+        else
+            case(Funct3E)
+                3'b000: // beq
+                begin
+                    PCSrc = ZeroE;
+                end
+                3'b001: // bne
+                begin
+                    PCSrc = !ZeroE;
+                end
+                3'b100: // blt
+                begin
+                    PCSrc = !ZeroE;
+                end
+                3'b101: // bge
+                begin
+                    PCSrc = ZeroE;
+                end
+                3'b110: // bltu
+                begin
+                    PCSrc = !ZeroE;
+                end
+                3'b111: // bgeu
+                begin
+                    PCSrc = ZeroE;
+                end
+                
+            endcase
 end
 
 executeff executeff(clk, RegWriteE, ResultSrcE, MemWriteE, DataWidthE,

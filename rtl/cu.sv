@@ -1,6 +1,7 @@
 module cu(
     input logic [31:0] instr,
     output logic JALR,
+    output logic JAL,
     output logic MemWrite,
     output logic RegWrite,
     output logic Branch,
@@ -19,6 +20,7 @@ assign op = instr[6:0];
 assign funct7 = instr[31:25];
 assign funct3 = instr[14:12];
 assign JALR = op == 7'b1100111;
+assign JAL = op == 7'b1101111;
 
 always_comb
 begin
