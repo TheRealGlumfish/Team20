@@ -48,7 +48,7 @@ ___
 **Note:** o = Main Contributor; v = Co-Author
 
 Task              | Files                                                                                  | Adam  | Archisha  | Dimitris  | Toby |
-:----------------:|:--- ----------------------------------------------------------------------------------------------------------------
+:----------------:|:---------------------------------------------------------------------------------------|:-----:|:---------:|:---------:|:----:|
 Single Cycle      | 
 Repo Setup        | SystemVerilog modules and testbench source code                                        |       |           |           |      |
 Entry Script      | Documentation                                                                          |       |           |           |      |
