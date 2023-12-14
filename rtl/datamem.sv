@@ -8,7 +8,8 @@ module datamem#(
     input logic [31:0] wdata,
     input logic wen,
     input logic [2:0] DataWidth,
-    input logic [31:0] ioin,
+    input logic [31:0] ioin1,
+    input logic [31:0] ioin2,
     output logic [31:0] dout
 );
 
@@ -19,7 +20,10 @@ always_comb
 begin
     if(addr > 32'hBFC00FFF)
     begin
-        dout = ioin;
+        if(addr == 32'hFFFFFFFF) 
+            dout = ioin1;
+        else // should be used with 0xFFFFFFDF
+            dout = ioin2;
     end
     else
     case(DataWidth)    

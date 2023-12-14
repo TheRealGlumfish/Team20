@@ -1,7 +1,8 @@
 module cpu(
     input logic clk,
     input logic rst,
-    input logic [31:0] ioin,
+    input logic [31:0] ioin1,
+    input logic [31:0] ioin2,
     output logic [31:0] a0
 );
 
@@ -176,7 +177,7 @@ logic [31:0] PCPlus4M;
 
 logic [31:0] ReadDataM;
 
-datamem datamem(clk, ALUResultM, WriteDataM, MemWriteM, DataWidthM, ioin, ReadDataM);
+datamem datamem(clk, ALUResultM, WriteDataM, MemWriteM, DataWidthM, ioin1, ioin2, ReadDataM);
 
 memoryff memoryff(clk, RegWriteM, ResultSrcM,
                         RegWriteW, ResultSrcW,

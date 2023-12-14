@@ -45,9 +45,10 @@ int main(int argc, char **argv, char **env){
         // }
 
         // rotary encoder can be used to slow simulation
-        std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
 
-        top->ioin = vbdFlag();
+        top->ioin1 = vbdFlag();
+        top->ioin2 = vbdValue();
         vbdBar(top->a0);
         //790,000
 
