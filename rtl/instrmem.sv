@@ -15,12 +15,12 @@ logic[31:0] addr;
 assign addr = {pc[31:2], 2'b0} - START_POS;
 
 // reads 4 bytes at a time, starting from the input address
-assign dout = {mem_array[addr], mem_array[addr+1], mem_array[addr+2],mem_array[addr+3]};
+assign dout = {mem_array[addr + 3], mem_array[addr + 2], mem_array[addr + 1], mem_array[addr]};
 
 // initialises memory with the program.
 initial
 begin
 	$display("Loading rom.");
-    $readmemh("main.mem", mem_array);
+    $readmemh("pdf.hex", mem_array);
 end
 endmodule
