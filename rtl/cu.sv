@@ -21,6 +21,8 @@ assign op = instr[6:0];
 assign funct7 = instr[31:25];
 assign funct3 = instr[14:12];
 assign JALR = op == 7'b1100111;
+//works for lw or sw type instructions
+// assign cacheEn = (op==7'b0100011 && funct3== 3'b010 | op==7'b0000011 && funct3==3'b010 ) ? 1 : 0 ;
 
 always_comb
 begin
@@ -35,7 +37,7 @@ begin
             RegWrite = 1;
             ALUctrl = {funct7[5], funct3}; 
             DataWidth = 3'b000;
-            cacheEn = 0;
+            cacheEn=0;
         end
         7'b0000011: // I-Type instructions (load)
         begin
@@ -46,6 +48,7 @@ begin
            ImmSrc = 3'b000;
            RegWrite = 1;
            ALUctrl = 4'b0000;
+           cacheEn = 1;
            case(funct3)
                 3'b000: // load byte
                     DataWidth = 3'b010;
@@ -53,15 +56,13 @@ begin
                     DataWidth = 3'b001;
                 3'b010: // load word
                     DataWidth = 3'b000;
-                    cacheEn = 1;
                 3'b100: // load byte unsigned
                     DataWidth = 3'b110;
                 3'b101: // load half unsigned
                     DataWidth = 3'b101;
                 default:
                     DataWidth = 3'b000;
-                    cacheEn=0;
-            endcase
+           endcase
         end
         7'b0010011: // I-Type instructions (arithmetic)
         begin
@@ -96,13 +97,13 @@ begin
             ImmSrc = 3'b001;
             RegWrite = 0;
             ALUctrl = 4'b0000;
+            cacheEn=1;
             case(funct3)
                 3'b000: // store byte
                     DataWidth = 3'b010;
                 3'b001: // store half
                     DataWidth = 3'b001;
                 3'b010: // store word
-                    cacheEn=1;
                     DataWidth = 3'b000;
                 default:
                     DataWidth = 3'b000;
@@ -185,7 +186,6 @@ begin
         end
 	default:
 	begin
-       cacheEn = 0; 
 	   PCsrc = 0;
 	   ResultSrc = 2'b00;
 	   MemWrite = 0;
@@ -194,6 +194,7 @@ begin
 	   ImmSrc = 3'b000;
 	   RegWrite = 0;
 	   DataWidth = 3'b000;
+       cacheEn=0;
 	end
     endcase
 end

@@ -58,7 +58,7 @@ regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ioin, ReadData);
-cache cache (clk,cacheEn,MemWrite,ALUout,ReadData,regOp2,cacheOut);
+cache cache (clk,DataWidth,cacheEn,MemWrite,ALUout,ReadData,regOp2,cacheOut);
 always_comb
 begin
     case(ResultSrc)
