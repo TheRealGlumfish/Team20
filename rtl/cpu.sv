@@ -24,6 +24,7 @@ logic [31:0] ImmOp;
 logic MemWrite;
 logic JALR;
 logic[2:0] DataWidth;
+logic cacheEn;
 
 logic [1:0] ResultSrc;
 logic [31:0] ReadData;
@@ -37,13 +38,15 @@ logic [31:0] PC;
 // ROM
 logic [31:0] instr;
 
+//CACHE
+logic [31:0] cacheOut;
 
 
 instrmem instrmem(PC, instr);
 
 pc Pc(clk, rst, PCsrc, JALR, ImmOp, ALUout, PC);
 
-cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, ResultSrc, ImmSrc, ALUctrl, DataWidth);
+cu Cu(instr, Zero, JALR, MemWrite, RegWrite, PCsrc, ALUsrc, cacheEn, ResultSrc, ImmSrc, ALUctrl, DataWidth);
 se Se(instr, ImmSrc, ImmOp);
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
@@ -55,14 +58,14 @@ regfile RegFile(clk, rs1, rs2, rd, RegWrite, result, ALUop1, regOp2, a0);
 assign ALUop2 = ALUsrc ? ImmOp : regOp2;
 alu ALU(ALUop1, ALUop2, ALUctrl, ALUout, Zero);
 datamem datamem(clk, ALUout, regOp2, MemWrite, DataWidth, ioin, ReadData);
-
+cache cache (clk,cacheEn,MemWrite,ALUout,ReadData,regOp2,cacheOut);
 always_comb
 begin
     case(ResultSrc)
     2'b00: 
         result = ALUout;
     2'b01:
-        result = ReadData; 
+        result = cacheEn ? cacheOut : ReadData; 
     2'b10:
         result = PC + 4;
     2'b11:

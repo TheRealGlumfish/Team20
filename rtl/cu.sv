@@ -6,6 +6,7 @@ module cu(
     output logic RegWrite,
     output logic PCsrc,
     output logic ALUsrc,
+    output logic cacheEn, //signal to tell if we are using cache (if we load or write)
     output logic [1:0]  ResultSrc,
     output logic [2:0] ImmSrc,
     output logic [3:0] ALUctrl,
@@ -34,6 +35,7 @@ begin
             RegWrite = 1;
             ALUctrl = {funct7[5], funct3}; 
             DataWidth = 3'b000;
+            cacheEn = 0;
         end
         7'b0000011: // I-Type instructions (load)
         begin
@@ -51,13 +53,15 @@ begin
                     DataWidth = 3'b001;
                 3'b010: // load word
                     DataWidth = 3'b000;
+                    cacheEn = 1;
                 3'b100: // load byte unsigned
                     DataWidth = 3'b110;
                 3'b101: // load half unsigned
                     DataWidth = 3'b101;
                 default:
                     DataWidth = 3'b000;
-           endcase
+                    cacheEn=0;
+            endcase
         end
         7'b0010011: // I-Type instructions (arithmetic)
         begin
@@ -69,6 +73,7 @@ begin
             RegWrite = 1;
             ALUctrl = (funct3 == 3'b101) ? {funct7[5], funct3} : {1'b0, funct3}; 
             DataWidth = 3'b000;
+            cacheEn=0;
         end
         7'b1100111: // I-Type instructions (jalr)
         begin
@@ -80,6 +85,7 @@ begin
             RegWrite = 1;
             ALUctrl = 4'b0000;
             DataWidth = 3'b000;
+            cacheEn=0;
         end
         7'b0100011: // S-Type instructions
         begin
@@ -96,6 +102,7 @@ begin
                 3'b001: // store half
                     DataWidth = 3'b001;
                 3'b010: // store word
+                    cacheEn=1;
                     DataWidth = 3'b000;
                 default:
                     DataWidth = 3'b000;
@@ -109,6 +116,7 @@ begin
             ImmSrc = 3'b010;
             RegWrite = 0;
             DataWidth = 3'b000;
+            cacheEn=0;
             case(funct3)
                 3'b000: // beq
                 begin
@@ -161,6 +169,7 @@ begin
             RegWrite = 1;
             ALUctrl = 4'b0000; // Don't care
             DataWidth = 3'b000;
+            cacheEn=0;
         end
         7'b1101111: // J-Type instructions (jal)
         begin
@@ -172,9 +181,11 @@ begin
            ImmSrc = 3'b011; // check possibly disable?
            RegWrite = 1;
            DataWidth = 3'b000;
+           cacheEn=0;
         end
 	default:
 	begin
+       cacheEn = 0; 
 	   PCsrc = 0;
 	   ResultSrc = 2'b00;
 	   MemWrite = 0;
