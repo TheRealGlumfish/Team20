@@ -12,17 +12,17 @@
 
 ## Table of Contents
 
-* F1 Program
-* Program Counter & Instruction Memory
-* Control Unit 
+* F1 Program (Dimitris)
+* Program Counter & Instruction Memory 
+* Control Unit (Archisha, Dimitris)
 * ALU (Dimitris)
-* Data Memory
-* Pipelining and Hazard unit 
-* Cache
+* Data Memory 
+* Pipelining and Hazard unit (Adam, Archisha, Toby)
+* Cache (Adam, Dimitris)
 * Individual Statements:
     * [Adam El Jaafari]
-    * [Archisha Garg]
-    * [Dimitris Alexopoulos]
+    * [Archisha Garg](https://github.com/TheRealGlumfish/Team20/blob/report/doc/ArchishaGarg.md)
+    * [Dimitris Alexopoulos](https://github.com/TheRealGlumfish/Team20/blob/report/doc/Dimitris%20Alexopoulos.md)
     * [Toby Browne]
 <br>
 
