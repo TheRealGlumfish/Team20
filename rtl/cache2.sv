@@ -1,4 +1,4 @@
-module cache #(
+module cache2 #(
     parameter setlength = 2 // a set length of 2 means 4 cache blocks
 )(
     input clk,
