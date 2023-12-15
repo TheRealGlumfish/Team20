@@ -30,6 +30,16 @@ The following goals were reached:
 
 ---
 
+## Capabilities
+
+- Full RV32I instruction set support (except `AUIPC`, `FENCE`, `FENCI.I`, `SCALL`, `SBREAK`, `RDCYCLE`, `RDCYCLEH`, `RDTIME`, `RDTIMEH`, `RDINSTRET`, `RDINSTRETH`)
+- Fully pipelined with hazard detection and direct mapped cache
+- 1024 bytes of cache
+- 4096 bytes of instruction memory
+- 131072 bytes of data memory
+- 1 I/O (output) register
+- 2 memory mapped I/O (input) ports
+
 ## Contribution Table
 
 **Key:** o = Main Contributor; v = Co-Author
@@ -65,7 +75,7 @@ ___
 These are some files which are important for building/using the project.
 
 File                       | Description
-:-------------------------:|:------------------------------------------------
+:--------------------------|:------------------------------------------------
 [`tb/cpu.sh`](tb/cpu.sh)   | Build script for the CPU testbench
 [`test/f1.sh`](test/f1.sh) | Build script for the CPU testbench
 [`tb/pdf.hex`](tb/pdf.hex) | Reference program binary
