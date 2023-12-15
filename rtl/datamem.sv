@@ -1,7 +1,6 @@
 module datamem#(
     parameter MEM_SIZE = 131072,
-    USABLE_MEM_START = 'h10000,
-    IO_IN_ADDR = 32'hFFFFFFFF
+    parameter USABLE_MEM_START = 'h10000
 )(
     input logic clk,
     input logic [31:0] addr,
@@ -93,7 +92,7 @@ end
 initial
 begin
 	$display("Loading data memory.");
-    $readmemh("gaussian.mem", mem_array, 'h10000);
+    $readmemh("../tb/gaussian.mem", mem_array, 'h10000);
 end
 
 endmodule

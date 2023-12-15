@@ -1,6 +1,6 @@
 module instrmem#(
     parameter MEM_SIZE = 4096,
-    START_POS = 'hbfc00000
+    parameter START_POS = 'hbfc00000
 )(
     input logic [31:0] pc,
     output logic [31:0] dout
@@ -21,6 +21,6 @@ assign dout = {mem_array[addr + 3], mem_array[addr + 2], mem_array[addr + 1], me
 initial
 begin
 	$display("Loading rom.");
-    $readmemh("pdf.hex", mem_array);
+    $readmemh("../test/f1.hex", mem_array);
 end
 endmodule

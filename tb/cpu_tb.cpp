@@ -4,9 +4,8 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
-// #include "vbuddy.cpp"
+#include "vbuddy.cpp"
 
-// #include "vbuddy.cpp"
 #define MAX_SIM_CYC 2000000
 
 int main(int argc, char **argv, char **env){
@@ -22,8 +21,8 @@ int main(int argc, char **argv, char **env){
     tfp->open("cpu.vcd");
 
     //init vbuddy
-    // if(vbdOpen()!=1) return(-1);
-    // vbdHeader("Lab 4: CPU");
+    if(vbdOpen()!=1) return(-1);
+    vbdHeader("RISCV CPU");
 
     // set rotary button to "one-shot" mode
     // vbdSetMode(1);
@@ -39,10 +38,10 @@ int main(int argc, char **argv, char **env){
             top->eval();
         }
 
-        // if(simcyc>790000){
-        //     vbdPlot(top->a0, 0, 255);
-        //     vbdCycle(simcyc);
-        // }
+        if(simcyc>790000){
+            vbdPlot(top->a0, 0, 255);
+            vbdCycle(simcyc);
+        }
 
         // rotary encoder can be used to slow simulation
         // std::this_thread::sleep_for(std::chrono::milliseconds(10 * vbdValue()));
@@ -57,14 +56,14 @@ int main(int argc, char **argv, char **env){
         // vbdHex(2, (int(top->a0) >> 4) & 0xF);
         // vbdHex(1, (int(top->a0)) & 0xF);
 
-        if((Verilated::gotFinish()) /*|| (vbdGetkey() == 'q')*/) {
-            // vbdClose();
+        if((Verilated::gotFinish()) || (vbdGetkey() == 'q')) {
+            vbdClose();
             tfp->close();
             exit(0);
         }
 
     }
-    // vbdClose();
+    vbdClose();
     tfp->close();
     exit(0);
 }
