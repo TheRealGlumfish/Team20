@@ -1,6 +1,7 @@
 <center>
 
-## Team 20: RISC-V CPU
+# Team 20: RISC-V CPU
+RISC-V CPU Project for Imperial EIE 2023/24
 
 ---
 
@@ -12,7 +13,7 @@
 
 ## Table of Contents
 
-* F1 Program
+* F1 Program**
 * Program Counter & Instruction Memory
 * Control Unit 
 * ALU (Dimitris)
@@ -24,15 +25,6 @@
     * [Archisha Garg]
     * [Dimitris Alexopoulos]
     * [Toby Browne]
-<br>
-
-___
-
-## Quick Start
-___
-
-
-<br>
 
 ___
 
@@ -45,37 +37,29 @@ ___
 ## Contribution Table
 ___
 
-**Note:** o = Main Contributor; v = Co-Author
+**Key:** o = Main Contributor; v = Co-Author
 
 Task              | Files                                                                                  | Adam  | Archisha  | Dimitris  | Toby |
-:----------------:|:---------------------------------------------------------------------------------------|:-----:|:---------:|:---------:|:----:|
-Single Cycle      | 
-Repo Setup        | SystemVerilog modules and testbench source code                                        |       |           |     o     |      |
-Entry Script      |                                                                                        |       |           |           |      |
-F1 Program        | [f1_tb.cpp](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/f1_tb.cpp)       |       |           |     o     |      |
-Program Counter   | [pc.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/pc.sv)               |   o   |           |           |      |
-Instruction Memory| [instrmem.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/instrmem.sv)   |   o   |           |           |      |
-Control Unit      | [cu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/cu.sv)               |   v   |     o     |     o     |      |
-ALU               | [alu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/alu.sv)             |       |           |     o     |      |
-Sign Extend       | [se.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/se.sv)               |       |     o     |           |      |
-Data Memory       | [datamem.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/datamem.sv)     |       |           |           |      |
-Top Level         | [cpu.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/cpu.sv)             |       |           |           |   o  |
-Debugging         |                                                                                        |   v   |     v     |           |   v  |
-Pipeline          | 
-Pipeline Registers| [fetchff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/fetchff.sv)     |   o   |           |           |      |                                           | [decodeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/decodeff.sv)   |       |           |           |      |
-                  | [executeff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/executeff.sv) |       |           |           |      |
-                  | [memoryff.sv](https://github.com/TheRealGlumfish/Team20/blob/master/rtl/memoryff.sv)   |       |           |           |      |
-Hazard Unit       | [hazard.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/hazard.sv)     |       |     o     |           |   v  |
-Pipeline Programs |                                                                                        |       |           |           |   o  |
-Top Level         | [cpu.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/cpu.sv)           |       |           |           |   o  |
-Debugging         |                                                                                        |       |           |           |   o  |
-Cache             | 
-
+:-----------------|:---------------------------------------------------------------------------------------|:-----:|:---------:|:---------:|:----:|
+F1 Program        | [f1.s](test/f1.s), [f1_tb.cpp](rtl/f1_tb.cpp)                                          |       |           |     o     |      |
+Program Counter   | [pc.sv](rtl/pc.sv)                                                                     |   o   |           |           |      |
+Instruction Memory| [instrmem.sv](rtl/instrmem.sv)                                                         |   o   |           |           |   v  |
+Control Unit      | [cu.sv](rtl/cu.sv)                                                                     |   v   |     o     |     o     |   v  |
+ALU               | [alu.sv](rtl/alu.sv)                                                                   |       |           |     o     |      |
+Sign Extend       | [se.sv](rtl/se.sv)                                                                     |       |     o     |           |      |
+Data Memory       | [datamem.sv](rtl/datamem.sv)                                                           |       |           |           |   o  |
+Top Level         | [cpu.sv](rtl/cpu.sv)                                                                   |       |           |     o     |   o  |
+Pipeline Registers| [fetchff.sv](rtl/fetchff.sv), [executeff.sv](rtl/executeff.sv), [memoryff.sv](rtl/memoryff.sv), [decodeff.sv](rtl/decodeff.sv)   |   o   |           |           |  o  |
+Hazard Unit       | [hazard.sv](rtl/hazard.sv)                                                             |       |     o     |           |   v  |
+Cache             | [cache.sv](rtl/cache.sv)                                                               |   o   |           |     v     |      |
 ___
 
-## Specifications
-___
-
+## Directory Structure
+This is the directory structure that will be used for the project.
+Directory | Use
+:--------:|:------------------------------------------------
+`rtl`     | SystemVerilog modules
+`doc`     | Documentation and reports
 
 ___
 
