@@ -169,6 +169,6 @@ ___
 
 In addition to the contributions mentioned above, I helped in debugging and understanding certain areas to help create the code. Some examples:
 
-* Commit by Toby: [](https://github.com/TheRealGlumfish/Team20/commit/5aaf37200038d7736852a13f325428b1caba1d2a) In this, we noticed that the `pc` added the memory map value althought we already added this in the `aluout`. 
+* [Commit by Toby:](https://github.com/TheRealGlumfish/Team20/commit/5aaf37200038d7736852a13f325428b1caba1d2a) In this, we noticed that the `pc` added the memory map value althought we already added this in the `aluout`. 
 
-* Commit by Adam: [](https://github.com/TheRealGlumfish/Team20/commit/6b0b82fa737fb0b2986d670840a378661d4461d7) In this, we noticed that the `ResultSrc` had not been changed from 1 bit to 2 bits in the control unit. Also, an intermediate `BranchAndZero` was added which was equal to the branch value AND Zero flag so that this can be put through an OR gate with the jump flag to change `PCSrc`.
+* [Commit by Adam:](https://github.com/TheRealGlumfish/Team20/commit/6b0b82fa737fb0b2986d670840a378661d4461d7) In this, we noticed that the `ResultSrc` had not been changed from 1 bit to 2 bits in the control unit. Also, an intermediate `BranchAndZero` was added which was equal to the branch value AND Zero flag so that this can be put through an OR gate with the jump flag to change `PCSrc`.
