@@ -80,9 +80,12 @@ begin
         endcase
     if(wen && cache_en && !aligned) // if unaligned write, invalidate current set
     begin        
-        cache_valid[iset] <= 0;
-        if(cache_tag[iset] == cache_tag[iset + 1]) // if two adjacent sets share the same tag, it means they are adjacent words and must be both invalidated
-            cache_valid[iset + 1] <= 0;
+        if(cache_tag[iset] == itag) // if the cache holds part of the word, the word must be invalidated
+        begin
+            cache_valid[iset] <= 0;
+            if(cache_tag[iset] == cache_tag[iset + 1]) // if two adjacent sets share the same tag, it means they are adjacent words and must be both invalidated
+                cache_valid[iset + 1] <= 0;
+        end
     end
 end
 
