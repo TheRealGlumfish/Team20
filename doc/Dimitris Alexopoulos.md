@@ -7,9 +7,8 @@
 - [**Memory**](#memory)
     * Memory Mapped I/O
     * Cache
-- **F1 Lights Pogram**
-    * Jump
-    * Subroutine
+- [**F1 Lights Program**](#f1-lights-program)
+- [**Repomaster**]
 ---
 ## Register File
 https://github.com/TheRealGlumfish/Team20/blob/232045f4fa1b06537831d65f6331cc133ddbecd7/rtl/regfile.sv#L1-L34
@@ -143,3 +142,43 @@ The logic that controls this is the following.
     end
 ```
 This policy of not using cache for unaligned access means that memory mapped I/O is not cached which is what we want to happen, as the inputs `ioin1` and `ioin2` change independently of writes and thus would be out of sync.
+
+https://github.com/TheRealGlumfish/Team20/blob/0fe43279515142c183cca432072dbb0100b8bf93/rtl/cache.s#L1-L27
+
+In order to test the cache I wrote a test program, which loads into memory and then repeately accesses the same addresses to see if they get cached.
+It also tests for unaligned access and cache invalidation.
+Markers are inserted in the traces by setting the `a0` register to different magic numbers such as `0xDEAD`.
+The trace can be seen below, where `hit` goes high where there is a cache hit, and `cache_valid` changes where there is an invalidation.
+
+![Cache Trace](images/cache_trace.png)
+
+Please not that if `hit` is high for only the second half of a clock cycle it means there was a miss and the data was cached to prevent future misses.
+A true hit means `hit` is on both for the high and low part of a clock cycle.
+Hit being off for both indicates unaligned access.
+
+---
+
+## F1 Lights Program
+
+https://github.com/TheRealGlumfish/Team20/blob/14a48822ee5550996d13e3d2ed1edbb2a4b1b358/test/f1.s#L1-L89
+
+https://github.com/TheRealGlumfish/Team20/blob/14a48822ee5550996d13e3d2ed1edbb2a4b1b358/rtl/f1_tb.cpp#L1-L70
+
+![FSM](https://github.com/EIE2-IAC-Labs/Lab3-FSM/blob/main/images/state_diag.jpg)
+
+I was responsible for writting the F1 lights program as well as an accompanying test bench.
+I initially wrote the program using simple jumps [(3aec028)](https://github.com/TheRealGlumfish/Team20/commit/3aec0282cc1abfb74ef20f8d95fb3daf70929c1b).
+Which I then refactored to use subroutines as per the program specification [(45300e0)](https://github.com/TheRealGlumfish/Team20/commit/45300e0fe3190cfb466a789309ed66c8a5b1ec69).
+I did not face any particular challenges when writting the program and I imitated the FSM operation from Lab3.
+The enable singal was mapped to `ioin1` which must be held on for the lights sequence to continue.
+In order to reset the sequence the enable must be released.
+Evidence of the F1 lights program running on VBuddy can be found on our team statement.
+
+## Repomaster
+
+As the repomaster I had some additional responsibilities.
+Due to that my contributions are more scattered than other members as a good chunk of my work was dedicated on quality assurance, formatting, renaming and maintaining the repository.
+Thus I have worked on all modules rather than dedicating my work on just one.
+
+Part of my time was spent on merges and integration such as connecting and merging the cache with the pipelined CPU [(bd88bf8)](https://github.com/TheRealGlumfish/Team20/commit/bd88bf87bf74945c1f94ae5c8f0cf91b55a3032b).
+Sometimes I utilized GitHub pull requests in order include the team in the review and merge process [(#7)](https://github.com/TheRealGlumfish/Team20/pull/7) and [(#3)](https://github.com/TheRealGlumfish/Team20/pull/3).
