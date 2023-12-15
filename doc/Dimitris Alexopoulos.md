@@ -5,8 +5,8 @@
 - [**ALU**](#alu-arithmetic-and-logic-unit)
 - [**Control Unit**](#control-unit)
 - [**Memory**](#memory)
-    * Memory Mapped I/O
-    * Cache
+    * [Memory Mapped I/O](#memory-mapped-io)
+    * [Cache](#cache)
 - [**F1 Lights Program**](#f1-lights-program)
 - [**Repomaster**](#repomaster)
 - [**Conclusion**](#conclusion)
@@ -213,3 +213,7 @@ If I was going to do something differently for this project would be to have got
 Implementing more complicated caches would have been very interesting.
 Upgrading the current cache's capabilities to deal with unaligned access would also be an improvement I would have made if it weren't for time constraints.
 Although overall I am very satisfied and proud of the end result and the goals me and my team managed to achieve.
+
+#### References
+
+Diagrams and tables were used from the ELEC50010 Instruction Architectures & Compiler (IAC) -  Autumn Term 2023 module lecture slides by Professor Peter Y. K. Cheung.
