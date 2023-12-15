@@ -20,6 +20,16 @@ RISC-V CPU Project for Imperial EIE 2023/24
 
 ---
 
+## Milestones
+The following goals were reached:
+
+- **Single-cycle CPU** [tag: single_cycle](https://github.com/TheRealGlumfish/Team20/releases/tag/single_cycle)
+- **Pipelined CPU with hazard detection** [tag: pipelined_with_hazard](https://github.com/TheRealGlumfish/Team20/releases/tag/pipelined_with_hazard)
+- **CPU with cache** [tag: cache_only](https://github.com/TheRealGlumfish/Team20/releases/tag/cache_only)
+- **Pipelined CPU with hazard detection and caching** [tag: cache_pipeline_v2](https://github.com/TheRealGlumfish/Team20/releases/tag/cache_pipeline_v2)
+
+---
+
 ## Contribution Table
 
 **Key:** o = Main Contributor; v = Co-Author
@@ -107,7 +117,7 @@ gtkwave cpu.vcd
 
 ## Results
 Below you can see videos of VBuddy running the reference programme and the F1 lights program.
-The images are linked to videos showing the operation so please click them.
+*The images are linked to videos showing the operation so please **click them**.*
 
 ### Reference Program
 
