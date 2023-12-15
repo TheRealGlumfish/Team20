@@ -20,7 +20,7 @@
 * Pipelining and Hazard unit (Adam, Archisha, Toby)
 * Cache (Adam, Dimitris)
 * Individual Statements:
-    * [Adam El Jaafari]
+    * [Adam El Jaafari](https://github.com/TheRealGlumfish/Team20/blob/report/doc/Adam%20El%20Jaafari.md)
     * [Archisha Garg](https://github.com/TheRealGlumfish/Team20/blob/report/doc/ArchishaGarg.md)
     * [Dimitris Alexopoulos](https://github.com/TheRealGlumfish/Team20/blob/report/doc/Dimitris%20Alexopoulos.md)
     * [Toby Browne]
@@ -70,6 +70,8 @@ Pipeline Programs |                                                             
 Top Level         | [cpu.sv](https://github.com/TheRealGlumfish/Team20/blob/pipeline/rtl/cpu.sv)           |       |           |           |   o  |
 Debugging         |                                                                                        |       |           |           |   o  |
 Cache             | 
+One-way           |                                                                                        |   v   |           |     o     |      |
+Two-way Incomplete|                                                                                        |       |     o     |           |      |
 
 ___
 
