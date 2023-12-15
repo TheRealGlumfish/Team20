@@ -65,7 +65,7 @@ begin
     2'b00: 
         result = ALUout;
     2'b01:
-        result = cacheEn ? cacheOut : ReadData; 
+        result = cacheOut; 
     2'b10:
         result = PC + 4;
     2'b11:

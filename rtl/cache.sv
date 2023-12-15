@@ -1,90 +1,103 @@
 module cache #(
-    parameter setlength = 3 // a set length of 3 means 8 cache blocks
+    parameter SET_LENGTH = 3 // a set length of 3 means 8 cache blocks
 )(
     input clk,
     input logic [2:0] DataWidth,
-    input cacheEn,
+    input cache_en,
     input wen, //memwrite
     input logic [31:0] addr, //[Tag,set,byte_offset]
-    input logic [31:0] ramdata,
-    input logic [31:0] wdatain, 
-    output logic [31:0] cache_out
+    input logic [31:0] rdata,
+    input logic [31:0] wdata, 
+    output logic [31:0] data_out
 );
-logic [62-setlength:0] cacheblocks [2**setlength-1:0]; // our set is 3 bits and so at most 8 cache blocks
-//input 
-logic [29-setlength:0] tag_i = addr[31:setlength+2];
-logic [setlength-1:0] set_i = addr[setlength+1:2]; 
-//cache
-logic v_c ;
-logic [29-setlength:0] tag_c ;
-logic Hit;
 
-assign v_c = cacheblocks[set_i][62-setlength];
-assign tag_c = cacheblocks[set_i][61-setlength:32];
-assign Hit = (v_c && tag_c == tag_i);
+logic [29-SET_LENGTH:0] itag;
+logic [SET_LENGTH-1:0] iset;
+logic [29-SET_LENGTH:0] ctag;
+logic cvalid;
+logic aligned;
+logic hit;
 
-//logic that outputs the value of cache if HIT or value of Ram data if miss
-always_comb begin
-    if(Hit) begin
-        case(DataWidth)
-            3'b000:begin//LW
-                cache_out = cacheblocks[set_i][31:0];
+logic [31:0] cache_line[2**SET_LENGTH];
+logic [29-SET_LENGTH:0] cache_tag[2**SET_LENGTH];
+logic cache_valid[2**SET_LENGTH];
+
+assign itag = addr[31:SET_LENGTH+2];
+assign iset = addr[SET_LENGTH+1:2];
+assign ctag = cache_tag[iset];
+assign cvalid = cache_valid[iset];
+
+assign aligned = addr[1:0] == 2'b00; 
+assign hit = (aligned && ctag == itag && cvalid);
+
+always_comb
+if(hit)
+    case(DataWidth)    
+        3'b000:  // LW
+            data_out = cache_line[iset];
+        3'b001: // LH
+            data_out = {{16{cache_line[iset][7]}}, cache_line[iset][15:0]};
+        3'b010: // LB
+            data_out = {{24{cache_line[iset][7]}}, cache_line[iset][7:0]};
+        3'b101: // LHU
+            data_out = {16'b0, cache_line[iset][15:0]};
+        3'b110: // LBU
+            data_out = {24'b0, cache_line[iset][7:0]};
+        default: // default just load word
+            data_out = cache_line[iset];
+    endcase
+else
+    data_out = rdata;
+
+always_ff@(posedge clk)
+begin
+    if(wen && cache_en && aligned)
+        case(DataWidth)    
+            3'b000:
+            begin
+                cache_line[iset] <= wdata;
+                cache_tag[iset] <= itag;
+                cache_valid[iset] <= 1;
             end
-            3'b001:begin//LH
-                cache_out = {{16{cacheblocks[set_i][15]}},cacheblocks[set_i][15:0]};
+            3'b001:
+            begin
+                cache_line[iset] <= {cache_line[iset][31:16], wdata[15:0]};
+                cache_tag[iset] <= itag;
+                cache_valid[iset] <= 1;
             end
-            3'b010:begin//LB
-                cache_out = {{24{cacheblocks[set_i][7]}},cacheblocks[set_i][7:0]};
-            end            
-            3'b101:begin//LHU
-                cache_out = {16'b0,cacheblocks[set_i][15:0]};
-            end            
-            3'b110:begin//LBU
-                cache_out = {24'b0,cacheblocks[set_i][7:0]};
+            3'b010:
+            begin
+                cache_line[iset] <= {cache_line[iset][31:8], wdata[7:0]};
+                cache_tag[iset] <= itag;
+                cache_valid[iset] <= 1;
             end
-            default:
-                begin
-                    cache_out = cacheblocks[set_i][31:0];
-                end
+            default: // default just load word
+            begin
+                cache_line[iset] <= wdata;
+                cache_tag[iset] <= itag;
+                cache_valid[iset] <= 1;
+            end
         endcase
-
-    end
-    else begin//miss
-        cache_out = ramdata;
-
-    end
-end
-
-//only alter cache if we have a instruction that uses memory/cache
-always_ff@(posedge clk)begin
-    if(cacheEn) //if we have a cache/  mem type instruction 
-        if(wen)begin
-        case(DataWidth)
-            3'b000:begin //sw
-                cacheblocks[set_i][31:0] <= wdatain; // assign word of the data of the address into the cache 
-                cacheblocks[set_i][61-setlength:32] <= tag_i; // replace the old tag with now the new tag of what we are replacing
-                cacheblocks[set_i][62-setlength] <= 1; // cache v bit is now valid (1)
-            end
-            3'b001:begin//shw
-                cacheblocks[set_i][15:0] <= wdatain[15:0]; // assign half of data of the address into the cache 
-                cacheblocks[set_i][61-setlength:32] <= tag_i; // replace the old tag with now the new tag of what we are replacing
-                cacheblocks[set_i][62-setlength] <= 1; // cache v bit is now valid (1)
-            end
-            3'b010:begin //sb
-                cacheblocks[set_i][7:0] <= wdatain[7:0]; // assign byte of data of the address into the cache if there was not a hit
-                cacheblocks[set_i][61-setlength:32] <= tag_i; // replace the old tag with now the new tag of what we are replacing
-                cacheblocks[set_i][62-setlength] <= 1; // cache v bit is now valid (1)
-            end
-        endcase
+    if(wen && cache_en && !aligned) // if unaligned write, invalidate current set
+    begin        
+        cache_valid[iset] <= 0;
+        if(cache_tag[iset] == cache_tag[iset + 1]) // if two adjacent sets share the same tag, it means they are adjacent words and must be both invalidated
+            cache_valid[iset + 1] <= 0;
     end
 end
-//if we miss write in negdge (to avoid the issues of the delayed by one clk signal tags)
-always_ff@(negedge clk)begin    
-    if(!Hit)begin
-        //we missed and so we have to store the value of ram into cache
-        cacheblocks[set_i][31:0] = ramdata; // assign the ram data of the address into the cache if there was not a hit
-        cacheblocks[set_i][61-setlength:32] = tag_i; // replace the old tag with now the new tag of what we are replacing
-        cacheblocks[set_i][62-setlength] = 1; // cache v bit is now valid (1)
-    end
+
+always_ff@(negedge clk)
+if(!hit && aligned && cache_en)
+begin
+    cache_line[iset] <= rdata;
+    cache_tag[iset] <= itag;
+    cache_valid[iset] <= 1;
 end
+
+integer i;
+initial
+    for (i = 0; i < 2**SET_LENGTH; i++)
+        cache_valid[i] = 0; 
+
 endmodule
+
