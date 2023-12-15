@@ -24,7 +24,7 @@ Later the program counter had to be changed to accommodate for JAL and JALR type
 I assigned a signal within the main decode module (Jump) to be 1 if we have a JALR or JAL instruction, and a JALR flag within the cu to tell if we have a JAL type instruction. Within the main decode i also had to modify the logic behind the control signals to take into account in we have a JAL or JALR type instruction, so that when we have a JAL the value of pc+4 gets stored in the target reg and jump is taken, i did this by setting PCSrc =1 if we have a branch or jump . My logic for JALR was if the JALR flag =1 then in the program counter, we have a signal called target that we set to the aluout value, and the program counter would equal the aluout value. This is because the JALR instruction loads the value of the source reg + the offset into the pc, and so we jsut need to feed the ALU value into the pc and do what we did before with JAL and store the pc +4 in the destination register. JAL instructions worked however JALR did not work fully.
 Later Dimitris and Toby modified the CU and found a more efficient method to implement JAL and JALR, however we still use the same principles that we have a JALR flag coming from the cu and if this is high then we load the aluout value into the program counter.
 
-### Instruction Memory -  
+### Instruction Memory 
 ### Commits [(0587ea9)](https://github.com/TheRealGlumfish/Team20/commit/0587ea9b69b5ba94a4e103e0ef6a7bf394a7bc6f)
 ( Readme from commit e4aba55dcabe68d1e627c2f829add5d4605561de )
 - Allocated a ROM array (read-only memory) with 2^10 8-bit memory locations (same as having 2^8=256 32-bit memory locations).
