@@ -6,6 +6,9 @@ module alu(
     output logic Zero
 );
 
+logic signed [31:0] ALUop1_signed;
+assign ALUop1_signed = ALUop1;
+
 always_comb
 begin
     case(ALUctrl)
@@ -29,7 +32,7 @@ begin
         4'b0101: // logical shift right
             ALUout = ALUop1 >> ALUop2[4:0];
         4'b1101: // arithmetic shift right
-            ALUout = ALUop1 >>> ALUop2[4:0];
+            ALUout = ALUop1_signed >>> ALUop2[4:0];
         4'b0110: // bitwise OR
             ALUout = ALUop1 | ALUop2;
         4'b0111: // bitwise AND
