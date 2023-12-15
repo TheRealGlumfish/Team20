@@ -77,6 +77,10 @@ I set the outputs from the maindecode (ResultSrc, MemWrite, ALUctrl, ALUSrc, Imm
 <p align="center"> <img src="images/Maindecode1.png" /> </p><BR> 
 <p align="center"> <img src="images/Maindecode2.png" /> </p><BR> 
 
+[Link to module maindecode.sv](https://github.com/TheRealGlumfish/Team20/blob/cu/rtl/maindecode.sv)
+
+This was tested and it worked for all the instructions except for JALR (for which we had to include a flag as explained in the next section). 
+
 Finally, we decided to have only one `cu.sv` file rather than 3 (maindecode.sv, ALUDecode.sv, cu.sv) as there were not enough bits to implement all the ALU instructions, it was also neater and allowed us to debug faster. Therefore, all the code from maindecode was copied into the cu.sv file with a structure such that it was clear where the code for each instruction/ type of instruction came from. 
 ___
 
@@ -89,7 +93,7 @@ Relevant Commits:
 
 JAL is a J type instruction while JALR is I type and these required some extra logic to work.
 
-We had to include flags for `JAL` (J-type) and `JALR` (I-type) instructions to distinguish between them in the control unit and also the top module CPU. This allowed us to set `PCSrc` to 1 when there is a jump instruction so that the mux for `PCNext` can select from `PCTarget` and is therefore able to jump to the required address specified in the instruction. When the JALR flag was high, the value from ALUout was loaded into the program counter so that the loaded value is the source register + the offset as required. This is shown in the diagram:
+We had to include flags for `JAL` (J-type) and `JALR` (I-type) instructions in the control unit and also the top module CPU. This allowed us to set `PCSrc` to 1 when there is a jump instruction so that the mux for `PCNext` can select from `PCTarget` and is therefore able to jump to the required address specified in the instruction. When the JALR flag was high, the value from ALUout was loaded into the program counter so that the loaded value is the source register + the offset as required. This is shown in the diagram:
 
 <p align="center"> <img src="images/SingleCycle.png" /> </p><BR> 
 ___
@@ -107,11 +111,11 @@ I created the hazard unit with inputs and outputs using the following diagram:
 
 I used logic for stalls and flush using information from the lecture slides and textbook. 
 This unit consisted of 3 parts: 
-1. Data Forwarding (ForwardAE, ForwardBE) which determines if there is a data hazard in the execute stage by comparing the source register with the destination registers from stages such as memory and write-back. It helps in forwarding data to the execute stage directly from the memory or write-back stage, bypassing the need to wait for the regular pipeline flow, thus reducing stalls.
+1. Data Forwarding (`ForwardAE`, `ForwardBE`) which determines if there is a data hazard in the execute stage by comparing the source register with the destination registers from stages such as memory and write-back. It helps in forwarding data to the execute stage directly from the memory or write-back stage, bypassing the need to wait for the regular pipeline flow, thus reducing stalls.
 
-2. Stall Control (StallF, StallD) which detects hazards caused by load instructions (lwStall) by checking if the operands of the current instruction match the destination registers of the previous load instruction. If there's a match and the previous instruction intends to write to registers (MemtoRegE), it causes a stall to prevent incorrect data forwarding.
+2. Stall Control (`StallF`, `StallD`) which detects hazards caused by load instructions (`lwStall`) by checking if the operands of the current instruction match the destination registers of the previous load instruction. If there's a match and the previous instruction intends to write to registers (`MemtoRegE`), it causes a stall to prevent incorrect data forwarding.
 
-3. Pipeline Flush (FlushE, FlushD) when a jump or branching instruction is detected, signals to flush the pipeline stages, or in case of a load hazard (lwStall).
+3. Pipeline Flush (`FlushE`, `FlushD`) when a jump or branching instruction is detected, signals to flush the pipeline stages, or in case of a load hazard (`lwStall`).
 
 ___
 
@@ -121,13 +125,14 @@ ___
 Relevant Commits:
 * [Included JALR in pipeline](https://github.com/TheRealGlumfish/Team20/commit/da7089d74617a440ae77f5e14a4fba20add78744)
 
-I helped in pipelining by including the JALR instruction using different flags JALRE and JALRD for the different execute and decode stages. 
+I helped in pipelining by including the JALR instruction using different flags `JALRE` and `JALRD` for the different execute and decode stages. 
 
-JALRE is an output signal from the hazard module. It is set to 1 when a JALR instruction is detected in the execute stage. This flag indicates to the decode stage that a JALR instruction has been executed. It influences the FlushD signal, indicating whether a flush is required in the decode stage due to a JALR instruction in the execute stage. This is shown in code as:
+JALRE is an output signal from the hazard module. It is set to 1 when a JALR instruction is detected in the execute stage. This flag indicates to the decode stage that a JALR instruction has been executed. It influences the `FlushD` signal, indicating whether a flush is required in the decode stage due to a JALR instruction in the execute stage. This is shown in code as:
+
 ```hazard
 FlushD = (PCSrcE | JALRE)
 ```
-In the decodeff module, JALRD is an input signal. On a positive clock edge, if clear is not active, JALRD is transferred to JALRE, allowing the state of the JALR flag to pass from the decode stage to the execute stage.
+In the `decodeff` module, JALRD is an input signal. On a positive clock edge, if clear is not active, JALRD is transferred to JALRE, allowing the state of the JALR flag to pass from the decode stage to the execute stage.
 
 ___
 
@@ -137,19 +142,33 @@ ___
 Relevant Commits:
 * [Created two-way cache](https://github.com/TheRealGlumfish/Team20/commit/2e53c2166b46785e03c45ca9fd98ee656b3f0e3a)
 
-I upgraded the one-way cache into two-way using the lecture slides to understand the differences and I implemented these in code. The main changes were that two-way uses two arrays to store cache blocks and  each of these contained a tag and validity information, hits in both sets checked before accessing data, stores data from memory into both cache blocks of the respective set on a miss. I used the following diagram from the lectures to implement this:
+I upgraded the one-way cache into two-way using the lecture slides to understand the differences and I implemented these in code. The main changes were that two-way uses two arrays to store the cache blocks (Each block is represented by `cacheblocks1[set_i]` and `cacheblocks2[set_i]`) and each of these contained a tag and validity information, hits in both sets checked before accessing data, stores data from memory into both cache blocks of the respective set on a miss. 
+
+I included `Hit0` and `Hit1` which detect whether the address is present in either set of cache blocks (cacheblocks1 or cacheblocks2). Hit combines the hits from both sets using the code:
+
+```cache2
+Hit = (Hit1 | Hit0)
+```
+If a hit (Hit == 1), it selects the appropriate cache block data based on the `DataWidth`.
+If a miss, it outputs data from the memory (`ramdata`).
+The always_ff block manages cache writes: It checks for the availability of a cache/mem type instruction (`cacheEn`).
+If a write operation (`wen`) is enabled: It determines the type of data write (`DataWidth`) and updates the respective cache blocks with the new data and tag information.
+On a cache miss (Hit == 0), the module writes the data from memory (`ramdata`) into both sets of cache blocks at the given set index. 
+
+I used the following diagram from the lectures to implement this:
 
 <p align="center"> <img src="images/2wayCache.png" /> </p><BR> 
 
-Although, we did not have enough time to test this, I believe that this only required little debugging to work as intended. 
+This cache design efficiently uses set-associative mapping to improve hit rates by allowing multiple blocks to reside in the same set, offering more flexibility compared to direct-mapped caches.
+
+However, we did not have enough time to test this and therefore it is incomplete.
 ___
 
 ## Additional Comments
 ___
 
-In addition to the contributions mentioned above, I helped in debugging and understanding certain areas to help create the codes. For example:
+In addition to the contributions mentioned above, I helped in debugging and understanding certain areas to help create the code. Some examples:
 
+* Commit by Toby: [](https://github.com/TheRealGlumfish/Team20/commit/5aaf37200038d7736852a13f325428b1caba1d2a) In this, we noticed that the `pc` added the memory map value althought we already added this in the `aluout`. 
 
-
-
-
+* Commit by Adam: [](https://github.com/TheRealGlumfish/Team20/commit/6b0b82fa737fb0b2986d670840a378661d4461d7) In this, we noticed that the `ResultSrc` had not been changed from 1 bit to 2 bits in the control unit. Also, an intermediate `BranchAndZero` was added which was equal to the branch value AND Zero flag so that this can be put through an OR gate with the jump flag to change `PCSrc`.
