@@ -16,7 +16,7 @@ RISC-V CPU Project for Imperial EIE 2023/24
 - [**Adam El Jaafari**](doc/Adam%20El%20Jaafari.md)
 - [**Archisha Garg**](doc/ArchishaGarg.md)
 - [**Dimitris Alexopoulos**](doc/Dimitris%20Alexopoulos.md)
-- [**Toby Browne**](doc/TobyBrownePS.pdf)
+- [**Toby Browne**](doc/TobyBrowne.pdf)
 
 ---
 
