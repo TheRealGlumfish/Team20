@@ -26,7 +26,7 @@ Later Dimitris and Toby modified the CU and found a more efficient method to imp
 
 ### Instruction Memory 
 ### Commits [(0587ea9)](https://github.com/TheRealGlumfish/Team20/commit/0587ea9b69b5ba94a4e103e0ef6a7bf394a7bc6f)
-( Readme from commit e4aba55dcabe68d1e627c2f829add5d4605561de )
+Readme from commit [(e4aba55)](https://github.com/TheRealGlumfish/Team20/commit/e4aba55dcabe68d1e627c2f829add5d4605561de)
 - Allocated a ROM array (read-only memory) with 2^10 8-bit memory locations (same as having 2^8=256 32-bit memory locations).
 - Ignores the last 2 bits of our PC, as we need to make this byte-addressed.
 - Byte addressing: Each instruction is made of 4 addresses, and these addresses are offsets of the `addr` value. The list below associates the offset value and its corresponding instruction byte value.
