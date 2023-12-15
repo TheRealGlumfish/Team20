@@ -8,7 +8,8 @@
     * Memory Mapped I/O
     * Cache
 - [**F1 Lights Program**](#f1-lights-program)
-- [**Repomaster**]
+- [**Repomaster**](#repomaster)
+- [**Conclusion**](#conclusion)
 ---
 ## Register File
 https://github.com/TheRealGlumfish/Team20/blob/232045f4fa1b06537831d65f6331cc133ddbecd7/rtl/regfile.sv#L1-L34
@@ -174,6 +175,8 @@ The enable singal was mapped to `ioin1` which must be held on for the lights seq
 In order to reset the sequence the enable must be released.
 Evidence of the F1 lights program running on VBuddy can be found on our team statement.
 
+---
+
 ## Repomaster
 
 As the repomaster I had some additional responsibilities.
@@ -182,3 +185,20 @@ Thus I have worked on all modules rather than dedicating my work on just one.
 
 Part of my time was spent on merges and integration such as connecting and merging the cache with the pipelined CPU [(bd88bf8)](https://github.com/TheRealGlumfish/Team20/commit/bd88bf87bf74945c1f94ae5c8f0cf91b55a3032b).
 Sometimes I utilized GitHub pull requests in order include the team in the review and merge process [(#7)](https://github.com/TheRealGlumfish/Team20/pull/7) and [(#3)](https://github.com/TheRealGlumfish/Team20/pull/3).
+Small but crucial fixes were common [(0300d38)](https://github.com/TheRealGlumfish/Team20/commit/0300d383082b1d9f6776d9d8cc6cbef049b6a8d8), [(2097185)](https://github.com/TheRealGlumfish/Team20/commit/2097185328d0dc46aae8640628a24fbfdf41f1de), [(4aa3028)](https://github.com/TheRealGlumfish/Team20/commit/4aa3028e688677cba5434887177294b53a6a6d95), [(ce0b715)](https://github.com/TheRealGlumfish/Team20/commit/ce0b715929bff361126c797a471ded7da812ca9f), [(79697bc)](https://github.com/TheRealGlumfish/Team20/commit/79697bc4dd490a57b9c1468fc5fdb45eb993870b)
+
+---
+
+## Conclusion
+
+In conclusion this was a very challenging but informative project.
+Learning HDL design and SystemVerilog was extremely eye opening to a whole new word of electronics and possibilities.
+RISCV was a pleasure to work due to its consistency and with even though implementing it was difficult and I hope to see it succeed in the world of embedded systems but also mainstream computing.
+
+One of the most valuable experiences I had during this project was using Altera (Intel) Quartus II to synthesize the CPU on a Terasic DE0 board utilizing a Cyclone III FPGA.
+Not only did Quartus give me useful compiler and warnings errors that Verilator ommitted, helping us strengthen our design.
+It was just really interesting to see the CPU running on real hardware and also to deal with the problems of hardware such as synchronos memory and propagation delays.
+
+If I was going to do something differently for this project would be to have gotten involved in caching more early on as I originally was very intimidated by it but it turned out to be very intresting to work with.
+Implementing more compilcated caches would have been very intresting.
+Upgrading the current cache's capabilities to deal with unaligned access would also be an improvement I would have made if it weren't for time constraints.
