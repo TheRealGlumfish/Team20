@@ -126,22 +126,26 @@ gtkwave cpu.vcd
 ---
 
 ## Results
-Below you can see videos of VBuddy running the reference programme and the F1 lights program.
+Below you can see videos of VBuddy running the reference programme and the F1 lights program, as well as the corresponding traces.
 *The images are linked to videos showing the operation so please **click them**.*
 
 ### Reference Program
 
 #### Noisy
 [![Noisy Reference Video](https://img.youtube.com/vi/Y_nzNr7ADFw/0.jpg)](https://www.youtube.com/watch?v=Y_nzNr7ADFw)
+![Noisy Trace](doc/images/noisy_trace.png)
 
 #### Gaussian
 [![Gaussian Reference Video](https://img.youtube.com/vi/T2Tk2yOzgiE/0.jpg)](https://www.youtube.com/watch?v=T2Tk2yOzgiE)
+![Gaussian Trace](doc/images/gaussian_trace.png)
 
 #### Triangle
 [![Triangle Reference Video](https://img.youtube.com/vi/TX_0CC5hTIs/0.jpg)](https://www.youtube.com/watch?v=TX_0CC5hTIs)
+![Triangle Trace](doc/images/triangle_trace.png)
 
 #### Sine
 [![Sine Reference Video](https://img.youtube.com/vi/tG3ZVr8eeHc/0.jpg)](https://www.youtube.com/watch?v=tG3ZVr8eeHc)
+![Sine Trace](doc/images/sine_trace.png)
 
 ### F1 Lights Program
 
