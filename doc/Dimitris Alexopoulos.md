@@ -214,6 +214,8 @@ Implementing more complicated caches would have been very interesting.
 Upgrading the current cache's capabilities to deal with unaligned access would also be an improvement I would have made if it weren't for time constraints.
 Although overall I am very satisfied and proud of the end result and the goals me and my team managed to achieve.
 
+---
+
 #### References
 
 Diagrams and tables were used from the ELEC50010 Instruction Architectures & Compiler (IAC) -  Autumn Term 2023 module lecture slides by Professor Peter Y. K. Cheung.
