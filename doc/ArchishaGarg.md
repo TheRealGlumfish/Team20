@@ -142,7 +142,7 @@ ___
 Relevant Commits:
 * [Created two-way cache](https://github.com/TheRealGlumfish/Team20/commit/2e53c2166b46785e03c45ca9fd98ee656b3f0e3a)
 
-I upgraded the one-way cache into two-way using the lecture slides to understand the differences and I implemented these in code. The main changes were that two-way uses two arrays to store the cache blocks (Each block is represented by `cacheblocks1[set_i]` and `cacheblocks2[set_i]`) and each of these contained a tag and validity information, hits in both sets checked before accessing data, stores data from memory into both cache blocks of the respective set on a miss. 
+I upgraded the one-way cache (created by Dimitris) into two-way using the lecture slides to understand the differences and I implemented these in code. The main changes were that two-way uses two arrays to store the cache blocks (Each block is represented by `cacheblocks1[set_i]` and `cacheblocks2[set_i]`) and each of these contained a tag and validity information, hits in both sets checked before accessing data, stores data from memory into both cache blocks of the respective set on a miss. 
 
 I included `Hit0` and `Hit1` which detect whether the address is present in either set of cache blocks (cacheblocks1 or cacheblocks2). Hit combines the hits from both sets using the code:
 
@@ -172,3 +172,6 @@ In addition to the contributions mentioned above, I helped in debugging and unde
 * [Commit by Toby:](https://github.com/TheRealGlumfish/Team20/commit/5aaf37200038d7736852a13f325428b1caba1d2a) In this, we noticed that the `pc` added the memory map value althought we already added this in the `aluout`. 
 
 * [Commit by Adam:](https://github.com/TheRealGlumfish/Team20/commit/6b0b82fa737fb0b2986d670840a378661d4461d7) In this, we noticed that the `ResultSrc` had not been changed from 1 bit to 2 bits in the control unit. Also, an intermediate `BranchAndZero` was added which was equal to the branch value AND Zero flag so that this can be put through an OR gate with the jump flag to change `PCSrc`.
+
+In summary, our team achieved success with this project, validated by comprehensive testing demonstrating the functionality met all requirements. Throughout this experience, I acquired substantial knowledge in RISC-V, SystemVerilog, and hardware design, significantly boosting my confidence in these domains. The project sparked a keen interest in hardware design, prompting me to contemplate pursuing a career in this field. Looking ahead, I aim to deepen my expertise further and refine my skill set.
+Reflecting on the project, if I were to approach it again, I would prioritise earlier planning and code development. Rushing during the final weeks led to prolonged debugging sessions and attempting to fix issues under considerable stress. Additionally, I would have eagerly taken on tasks related to the ALU and the implementation of specific instructions, as I believe I have a good understanding of those. 
