@@ -17,11 +17,10 @@ begin
             ALUout = ALUop1 << ALUop2[4:0];
         4'b0010: // less than
         begin
-            if(ALUop1[31] && ALUop2[31])
-                ALUout = {31'b0, ALUop1 > ALUop2};
-            if(!ALUop1[31] && !ALUop2[31]) 
+            if(ALUop1[31] == ALUop2[31]) // if both negative or both negative
                 ALUout = {31'b0, ALUop1 < ALUop2};
-            ALUout = {31'b0, ALUop1[31]};
+            else
+                ALUout = {31'b0, ALUop1[31]};
         end
         4'b0011: // less than unsigned
             ALUout = {31'b0, ALUop1 < ALUop2};
@@ -35,6 +34,8 @@ begin
             ALUout = ALUop1 | ALUop2;
         4'b0111: // bitwise AND
             ALUout = ALUop1 & ALUop2;
+        4'b1001: // LUI instruction
+            ALUout = ALUop2;
         default: // should be unreachable
             ALUout = 32'hDEAD; // error magic number
     endcase

@@ -15,7 +15,7 @@ logic[31:0] addr;
 assign addr = {pc[31:2], 2'b0} - START_POS;
 
 // reads 4 bytes at a time, starting from the input address
-assign dout = {mem_array[addr+3], mem_array[addr+2], mem_array[addr+1],mem_array[addr]};
+assign dout = {mem_array[addr + 3], mem_array[addr + 2], mem_array[addr + 1], mem_array[addr]};
 
 // initialises memory with the program.
 initial

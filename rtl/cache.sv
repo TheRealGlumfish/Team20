@@ -1,11 +1,11 @@
 module cache #(
-    parameter SET_LENGTH = 3 // a set length of 3 means 8 cache blocks
+    parameter SET_LENGTH = 8 // a set length of 3 means 8 cache blocks
 )(
     input clk,
     input logic [2:0] DataWidth,
     input cache_en,
-    input wen, //memwrite
-    input logic [31:0] addr, //[Tag,set,byte_offset]
+    input wen,
+    input logic [31:0] addr,
     input logic [31:0] rdata,
     input logic [31:0] wdata, 
     output logic [31:0] data_out
