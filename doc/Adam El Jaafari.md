@@ -72,7 +72,7 @@ Verified by trace above
 
 ### Debugging (we all did at some point)
 
-There were quite a few issues with the single cycle CPU and so Toby Archisha and I were in person debugging the CPU, checking the traces in gtkwave and looking into if a signal is incorrect, where does it come from and how is it calculated and what is the logic that should drive that signal, ironing out bugs and errors, e.g in this commit by Toby 5aaf37200038d7736852a13f325428b1caba1d2a
+There were quite a few issues with the single cycle CPU and so Toby Archisha and I were in person debugging the CPU, checking the traces in gtkwave and looking into if a signal is incorrect, where does it come from and how is it calculated and what is the logic that should drive that signal, ironing out bugs and errors, e.g in this commit by Toby [(5aaf372)](https://github.com/TheRealGlumfish/Team20/commit/5aaf37200038d7736852a13f325428b1caba1d2a)
 we realised that our pc was also adding the memory map value, which was not needed since the aluout value had this memory value correction anyway.
 
 ### Test Benches for most components I made
