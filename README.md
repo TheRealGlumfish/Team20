@@ -154,3 +154,10 @@ Below you can see videos of VBuddy running the reference programme and the F1 li
 ### Counter
 
 [![Counter Video](https://img.youtube.com/vi/yVlzP7fNkNw/0.jpg)](https://www.youtube.com/watch?v=yVlzP7fNkNw)
+
+---
+
+## Licensing
+The project has been open-source licensed under a BSD-3-Clause license for educational purposes.
+This does not inlcude the reference program [`tb/pdf.s`](tb/pdf.s) and it's associated `*.mem` files, as well as the [`tb/vbuddy.cpp`](tb/vbuddy.cpp) file.
+Copyright for the previously mentioned files is attributed to Peter Y. K. Cheung and thus the license does not apply to them.
